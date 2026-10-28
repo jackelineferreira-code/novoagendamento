@@ -1,8 +1,3 @@
-<!doctype html>
-<html lang="pt-BR">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Painel de Logística CannaCare</title>
 <meta name="robots" content="noindex">
 <meta name="claude:viewport-fit-sides" content="cover">
@@ -121,23 +116,73 @@ input[type=search],select{font:inherit;font-size:13px;color:var(--dark);border:1
 .filters{display:flex;flex-wrap:wrap;gap:10px;align-items:end}
 .filters label{display:grid;gap:3px}
 .hide-sm{}
+.kpis.k6{grid-template-columns:repeat(6,minmax(0,1fr))}.kpis.k4{grid-template-columns:repeat(4,minmax(0,1fr))}
+/* formulários */
+.fld{display:grid;gap:4px;margin-bottom:12px}
+.fld>span{font-size:11.2px;font-weight:700;text-transform:uppercase;color:var(--dark)}
+input[type=text],input[type=email],input[type=number],textarea{font:inherit;font-size:13px;color:var(--dark);border:1px solid #d1d3e2;border-radius:3px;padding:7px 10px;background:#fff;width:100%}
+textarea{min-height:190px;resize:vertical;line-height:1.5}
+input[type=number]{width:80px}
+.seg{display:inline-flex;border:1px solid var(--ink);border-radius:3px;overflow:hidden}
+.seg button{font:inherit;font-size:12.5px;border:0;background:#fff;color:var(--ink);padding:6px 12px;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--ink);color:#fff}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 18px;border-radius:6px;font-size:13px;opacity:0;pointer-events:none;transition:opacity .2s;z-index:9;max-width:calc(100% - 32px)}
+.toast.on{opacity:1}
+.tag{display:inline-block;font-size:10.5px;border:1px solid var(--line);border-radius:10px;padding:1px 8px;color:var(--dark);background:#fafbfc;white-space:nowrap}
+.flow{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin-bottom:22px}
+.flow div{background:#fff;border:1px solid var(--line);border-radius:6px;padding:10px 12px;font-size:12px}
+.flow b{display:block;color:var(--dark);font-size:12.5px;margin-bottom:2px}
+.flow div.on{border-color:var(--success);box-shadow:inset 3px 0 0 var(--success)}
+/* prévia da área do paciente (identidade da loja, não do sistema interno) */
+.phone{max-width:390px;margin:0 auto;background:#fff;border:1px solid #d6d9d2;border-radius:26px;box-shadow:0 10px 40px rgba(58,59,69,.18);overflow:hidden;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;color:#4a4a4a}
+.ph-top{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border-bottom:1px solid #eee}
+.ph-logo{font-size:22px;font-weight:600;color:#5fb046;letter-spacing:-.01em;line-height:1}
+.ph-logo small{display:block;font-size:9px;color:#8bc47a;font-weight:400;letter-spacing:.1em;text-align:center}
+.ph-b{padding:16px 18px 22px}
+.ph-b h3{margin:0 0 2px;font-size:18px;color:#2f2f2f}
+.ph-sub{font-size:12.5px;color:#777;margin:0 0 14px}
+.ph-card{border:1px solid #ececec;border-radius:12px;padding:12px 14px;margin-bottom:12px}
+.ph-prev{background:#f3faf0;border-color:#d5ecc9}
+.ph-prev .big{font-size:20px;font-weight:700;color:#2f6f1f}
+.ph-warn{background:#fff8e6;border-color:#f5e3a6;color:#6b5000}
+.ph-act{background:#fdedef;border-color:#f5c6cb;color:#8a2318}
+.ph-btn{display:inline-block;font:inherit;font-size:13px;font-weight:600;border:0;border-radius:20px;background:#5fb046;color:#fff;padding:8px 16px;cursor:pointer;margin-top:8px}
+.ph-btn.out{background:#fff;color:#3f8a2a;border:1px solid #5fb046}
+.steps{list-style:none;margin:0;padding:0}
+.steps li{position:relative;padding:0 0 14px 28px;font-size:13px}
+.steps li:before{content:"";position:absolute;left:7px;top:16px;bottom:-2px;width:2px;background:#e3e3e3}
+.steps li:last-child:before{display:none}
+.steps i{position:absolute;left:0;top:2px;width:16px;height:16px;border-radius:50%;border:2px solid #cfcfcf;background:#fff}
+.steps li.ok i{background:#5fb046;border-color:#5fb046}
+.steps li.ok:before{background:#5fb046}
+.steps li.now i{border-color:#5fb046;box-shadow:0 0 0 4px #dff0d6}
+.steps li.late i{border-color:#e0a800;box-shadow:0 0 0 4px #fff1c2}
+.steps b{display:block;color:#2f2f2f;font-weight:600}
+.steps small{display:block;color:#888;font-size:11.5px}
+.steps li.fut{color:#aaa}.steps li.fut b{color:#9a9a9a}
+.ph-row{display:flex;justify-content:space-between;gap:8px;font-size:12.5px;padding:6px 0;border-bottom:1px dashed #eee}
+.ph-row:last-child{border-bottom:0}
+.sw{display:flex;align-items:center;justify-content:space-between;font-size:13px;padding:6px 0}
+.sw input{width:18px;height:18px;accent-color:#5fb046}
+ul.find{margin:0;padding-left:18px}
+ul.find li{margin-bottom:8px}
 @media (max-width:980px){
   .shell{grid-template-columns:minmax(0,1fr)}
-  aside{position:static;height:auto;padding:12px max(16px,env(safe-area-inset-left,0px)) 6px}
+  aside{position:static;height:auto;padding:12px max(16px,env(safe-area-inset-left,0px)) 6px;display:flex;gap:6px;overflow-x:auto}
   .logo{display:none}
   .sh,.nav li.other,hr.sd,.nav.oth{display:none}
-  .nav{display:flex;gap:6px;overflow-x:auto;padding-bottom:6px}
+  .flow{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .nav{display:flex;flex:none;gap:6px;padding-bottom:6px}
   .nav a{margin:0;border-radius:16px;white-space:nowrap;padding:6px 12px}
   main{padding:8px max(16px,env(safe-area-inset-right,0px)) 40px max(16px,env(safe-area-inset-left,0px))}
-  .kpis{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .kpis,.kpis.k4,.kpis.k6{grid-template-columns:repeat(2,minmax(0,1fr))}
   .stagebar{grid-template-columns:repeat(2,minmax(0,1fr))}
   .grid2,.grid-r{grid-template-columns:minmax(0,1fr)}
   .hide-sm{display:none}
+  .grid-r>.phone{order:-1}
 }
 button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,tr.click:focus-visible{outline:2px solid var(--purple);outline-offset:2px}
 </style>
-</head>
-<body>
 
 <div class="shell">
 <aside>
@@ -157,6 +202,21 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,tr
     <li><a href="#codigos" data-p="codigos"><svg viewBox="0 0 16 16"><path d="M1 4l7-3 7 3v8l-7 3-7-3zm7 1L3.5 3.2 8 5l4.5-1.8z"/></svg>Códigos de rastreio</a></li>
     <li><a href="#gestao" data-p="gestao"><svg viewBox="0 0 16 16"><path d="M1 14h14v1H1zM2 9h2v4H2zm4-4h2v8H6zm4 2h2v6h-2zm4-5h1v11h-1z"/></svg>Gestão semanal<span class="new">novo</span></a></li>
   </ul>
+  <div class="sh">Estoque</div>
+  <ul class="nav">
+    <li><a href="#estoque" data-p="estoque"><svg viewBox="0 0 16 16"><path d="M1 6l7-4 7 4v9H1zm3 3v4h3V9zm5 0v4h3V9z"/></svg>Estoque<span class="new">novo</span></a></li>
+  </ul>
+  <div class="sh">Compras</div>
+  <ul class="nav">
+    <li><a href="#compras" data-p="compras"><svg viewBox="0 0 16 16"><path d="M1 2h3l.6 2H15l-2 6H5.5L3.4 3.5H1z"/><circle cx="6.5" cy="13" r="1.5"/><circle cx="12" cy="13" r="1.5"/></svg>A comprar<span class="cnt" id="cnt-comp">0</span></a></li>
+    <li><a href="#pls" data-p="pls"><svg viewBox="0 0 16 16"><path d="M3 1h7l3 3v11H3zm2 5h6v1.5H5zm0 3h6v1.5H5z"/></svg>Pedidos de compra<span class="new">novo</span></a></li>
+    <li><a href="#novacompra" data-p="novacompra"><svg viewBox="0 0 16 16"><path d="M7 2h2v5h5v2H9v5H7V9H2V7h5z"/></svg>Nova compra<span class="new">novo</span></a></li>
+    <li><a href="#fornecedores" data-p="fornecedores"><svg viewBox="0 0 16 16"><path d="M1 5h14v2H1zm1 3h12v7H2zm2-7h8l1 3H3z"/></svg>Fornecedores<span class="new">novo</span></a></li>
+  </ul>
+  <div class="sh">Área do paciente</div>
+  <ul class="nav">
+    <li><a href="#paciente" data-p="paciente"><svg viewBox="0 0 16 16"><circle cx="8" cy="5" r="3"/><path d="M2 15c0-3.3 2.7-5 6-5s6 1.7 6 5z"/></svg>Prévia: meu pedido<span class="new">novo</span></a></li>
+  </ul>
   <hr class="sd">
   <div class="sh">Cadastros</div>
   <ul class="nav oth">
@@ -166,43 +226,44 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,tr
 </aside>
 <main id="app"></main>
 </div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <script>
 /* ============ DADOS (reais de 28/10: extrato Memphis 27/10, histórico do sistema e planilha de Tracking) ============ */
 const ETAPAS = [
-  {id:'pre',  nome:'Antes do rastreio', sub:'docs, produto, decisão do paciente', dono:'Karol', lim:'7 dias desde o pagamento'},
-  {id:'voo',  nome:'Rastreio → voo', sub:'FLT, PIF, aguardando embarque', dono:'Karol', lim:'6 dias acumulados'},
-  {id:'anv',  nome:'Anvisa e desembaraço', sub:'DEP, BRP, ANV, CLA', dono:'Fran', lim:'18 dias acumulados'},
-  {id:'lm',   nome:'Last mile', sub:'CHK até a entrega, por região', dono:'Fran', lim:'20 + 2 a 15 dias'},
-  {id:'crit', nome:'Exceções críticas', sub:'eventos e rastreio duplicado', dono:'Karol / Fran', lim:'ação no mesmo dia'},
+  {id:'pre',  nome:'Antes do rastreio', sub:'docs, produto, decisão do paciente', dono:'Ana', lim:'7 dias desde o pagamento'},
+  {id:'voo',  nome:'Rastreio → voo', sub:'FLT, PIF, aguardando embarque', dono:'Ana', lim:'6 dias acumulados'},
+  {id:'anv',  nome:'Anvisa e desembaraço', sub:'DEP, BRP, ANV, CLA', dono:'Bia', lim:'18 dias acumulados'},
+  {id:'lm',   nome:'Last mile', sub:'CHK até a entrega, por região', dono:'Bia', lim:'20 + 2 a 15 dias'},
+  {id:'crit', nome:'Exceções críticas', sub:'eventos e rastreio duplicado', dono:'Ana / Bia', lim:'ação no mesmo dia'},
   {id:'b2b',  nome:'B2B e judicial', sub:'fluxo próprio', dono:'Responsável B2B', lim:'conforme contrato'}
 ];
 const ATR = [ // atrasados e exceções, por etapa
-  {e:'pre', sev:'dan', ped:'81148', cod:'sem rastreio (parte Lazarus)', pac:'Beatriz Lemos', mot:'Aguardando produto · PL 0173', dias:40, lim:7, dono:'Karol', acao:'Registrar a previsão da PL 0173 e avisar a paciente'},
-  {e:'pre', sev:'dan', ped:'81370', cod:'sem rastreio', pac:'Carla Nunes', mot:'Aguardando decisão do paciente · sabor pendente desde 23/10', dias:9, lim:7, dono:'Fran', acao:'Fechar o sabor com a paciente'},
-  {e:'pre', sev:'dan', ped:'81592', cod:'sem rastreio', pac:'Daniel Prado', mot:'Aguardando produto · Pain Gummies x4 · estoque 0 · PL 0189', dias:8, lim:7, dono:'Karol', acao:'Registrar a previsão da PL 0189'},
-  {e:'pre', sev:'war', ped:'81629', cod:'sem rastreio', pac:'Elisa Moura', mot:'Aguardando produto · Reuni CBN Night · PL 1092', dias:7, lim:7, dono:'Karol', acao:'Oferecer envio parcial (CbdMD tem estoque)'},
-  {e:'voo', sev:'dan', ped:'81074', cod:'M9011477MIA', pac:'Fernanda Rocha', mot:'"Pedido criado" (FLT) desde 13/10, nenhum outro evento', dias:15, lim:6, dono:'Karol', acao:'Confirmar com a Memphis se o produto foi separado'},
-  {e:'voo', sev:'dan', ped:'81296', cod:'M9012110MIA', pac:'Gabriela Torres', mot:'Pronta desde 26/10 (preparo levou 6 dias); perdeu o voo de 27/10', dias:8, lim:6, dono:'Karol', acao:'Perdeu os voos de 22 e 27/10: confirmar embarque na quinta, 29/10'},
-  {e:'voo', sev:'dan', ped:'81555', cod:'M9013165MIA', pac:'Helena Castro', mot:'Pronta desde 26/10 (preparo levou 6 dias); perdeu o voo de 27/10', dias:8, lim:6, dono:'Karol', acao:'Perdeu os voos de 22 e 27/10: confirmar embarque na quinta, 29/10'},
-  {e:'voo', sev:'dan', ped:'81407', cod:'M9012743MIA', pac:'Isabela Freitas', mot:'Pronta desde 27/10 (preparo levou 7 dias); próximo voo quinta, 29/10', dias:8, lim:6, dono:'Karol', acao:'Perdeu os voos de 22 e 27/10: confirmar embarque na quinta, 29/10'},
-  {e:'voo', sev:'war', ped:'81666', cod:'M9013376MIA', pac:'Joana Ribeiro', mot:'Pronta para envio (PIF) desde 27/10 · no limite', dias:6, lim:6, dono:'Karol', acao:'Cobrar junto com o lote se não embarcar amanhã'},
-  {e:'anv', sev:'dan', ped:'81111', cod:'M9010633MIA', pac:'Lúcia Mendes', mot:'Armazém alfandegário (PNA) desde 26/10 · Anvisa desde 08/10', dias:28, lim:18, dono:'Fran', acao:'Cobrar a posição do desembaraço e avisar a paciente'},
-  {e:'lm',  sev:'dan', ped:'81148', cod:'M9010422MIA', pac:'Beatriz Lemos', mot:'Last mile para interior do RJ (Interior 1)', dias:34, lim:27, dono:'Fran', acao:'Avisar a previsão de 05/11'},
-  {e:'crit', sev:'dan', ped:'81222', cod:'M9011055MIA', pac:'—', mot:'ENT · Endereço não localizado (23/10)', dias:23, lim:35, dono:'Fran', acao:'Confirmar o endereço com o paciente'},
-  {e:'crit', sev:'dan', ped:'81185', cod:'M9011266MIA', pac:'—', mot:'INS · Fiscalização SEFAZ (24/10)', dias:21, lim:35, dono:'Fran', acao:'Acompanhar com a Memphis e avisar o paciente'},
-  {e:'crit', sev:'dan', ped:'81333', cod:'M9011688MIA', pac:'—', mot:'GRE · Memphis pede contato para confirmar dados (26/10)', dias:13, lim:27, dono:'Fran', acao:'Confirmar os dados de entrega'},
-  {e:'crit', sev:'dan', ped:'81259', cod:'M9010844MIA', pac:'—', mot:'TAX · CPF irregular na Receita (09/10)', dias:27, lim:27, dono:'Fran', acao:'Pedir a regularização do CPF'},
-  {e:'crit', sev:'dan', ped:'81777', cod:'M9014431MIA + M9014642MIA', pac:'Marta Pires', mot:'Rastreio duplicado (5 itens em cada)', dias:1, lim:2, dono:'Karol', acao:'Cancelar o excedente antes do voo'},
-  {e:'crit', sev:'dan', ped:'81703', cod:'M9013798MIA + M9014009MIA', pac:'Nelson Araújo', mot:'Rastreio duplicado (pedido de 1 item)', dias:5, lim:6, dono:'Karol', acao:'Cancelar o excedente antes do voo'},
-  {e:'crit', sev:'dan', ped:'81444', cod:'M9012532MIA', pac:'Otávio Lima', mot:'Rastreio duplicado · o M9012954MIA já embarcou', dias:8, lim:6, dono:'Karol', acao:'Pedir o cancelamento do M9012532MIA'},
+  {e:'pre', sev:'dan', ped:'81148', cod:'sem rastreio (parte Lazarus)', pac:'Beatriz Lemos', mot:'Aguardando produto · PL 0301', dias:40, lim:7, dono:'Ana', acao:'Registrar a previsão da PL 0301 e avisar a paciente'},
+  {e:'pre', sev:'dan', ped:'81370', cod:'sem rastreio', pac:'Carla Nunes', mot:'Aguardando decisão do paciente · sabor pendente desde 23/10', dias:9, lim:7, dono:'Bia', acao:'Fechar o sabor com a paciente'},
+  {e:'pre', sev:'dan', ped:'81629', cod:'sem rastreio', pac:'Daniel Prado', mot:'Aguardando produto · Pain Gummies x4 · estoque 0 · PL 0302', dias:8, lim:7, dono:'Ana', acao:'Registrar a previsão da PL 0302'},
+  {e:'pre', sev:'war', ped:'81666', cod:'sem rastreio', pac:'Elisa Moura', mot:'Aguardando produto · Reuni CBN Night · PL 0304', dias:7, lim:7, dono:'Ana', acao:'Oferecer envio parcial (CbdMD tem estoque)'},
+  {e:'voo', sev:'dan', ped:'81074', cod:'M9011477MIA', pac:'Fernanda Rocha', mot:'"Pedido criado" (FLT) desde 13/10, nenhum outro evento', dias:15, lim:6, dono:'Ana', acao:'Confirmar com a Memphis se o produto foi separado'},
+  {e:'voo', sev:'dan', ped:'81296', cod:'M9012110MIA', pac:'Gabriela Torres', mot:'Pronta desde 26/10 (preparo levou 6 dias); perdeu o voo de 27/10', dias:8, lim:6, dono:'Ana', acao:'Perdeu os voos de 22 e 27/10: confirmar embarque na quinta, 29/10'},
+  {e:'voo', sev:'dan', ped:'81592', cod:'M9013165MIA', pac:'Helena Castro', mot:'Pronta desde 26/10 (preparo levou 6 dias); perdeu o voo de 27/10', dias:8, lim:6, dono:'Ana', acao:'Perdeu os voos de 22 e 27/10: confirmar embarque na quinta, 29/10'},
+  {e:'voo', sev:'dan', ped:'81407', cod:'M9012743MIA', pac:'Isabela Freitas', mot:'Pronta desde 27/10 (preparo levou 7 dias); próximo voo quinta, 29/10', dias:8, lim:6, dono:'Ana', acao:'Perdeu os voos de 22 e 27/10: confirmar embarque na quinta, 29/10'},
+  {e:'voo', sev:'war', ped:'81703', cod:'M9013376MIA', pac:'Joana Ribeiro', mot:'Pronta para envio (PIF) desde 27/10 · no limite', dias:6, lim:6, dono:'Ana', acao:'Cobrar junto com o lote se não embarcar amanhã'},
+  {e:'anv', sev:'dan', ped:'81111', cod:'M9010633MIA', pac:'Lúcia Mendes', mot:'Armazém alfandegário (PNA) desde 26/10 · Anvisa desde 08/10', dias:28, lim:18, dono:'Bia', acao:'Cobrar a posição do desembaraço e avisar a paciente'},
+  {e:'lm',  sev:'dan', ped:'81148', cod:'M9010422MIA', pac:'Beatriz Lemos', mot:'Last mile para interior do RJ (Interior 1)', dias:34, lim:27, dono:'Bia', acao:'Avisar a previsão de 05/11'},
+  {e:'crit', sev:'dan', ped:'81222', cod:'M9011055MIA', pac:'—', mot:'ENT · Endereço não localizado (23/10)', dias:23, lim:35, dono:'Bia', acao:'Confirmar o endereço com o paciente'},
+  {e:'crit', sev:'dan', ped:'81185', cod:'M9011266MIA', pac:'—', mot:'INS · Fiscalização SEFAZ (24/10)', dias:21, lim:35, dono:'Bia', acao:'Acompanhar com a Memphis e avisar o paciente'},
+  {e:'crit', sev:'dan', ped:'81333', cod:'M9011688MIA', pac:'—', mot:'GRE · Memphis pede contato para confirmar dados (26/10)', dias:13, lim:27, dono:'Bia', acao:'Confirmar os dados de entrega'},
+  {e:'crit', sev:'dan', ped:'81259', cod:'M9010844MIA', pac:'—', mot:'TAX · CPF irregular na Receita (09/10)', dias:27, lim:27, dono:'Bia', acao:'Pedir a regularização do CPF'},
+  {e:'crit', sev:'dan', ped:'81851', cod:'M9014431MIA + M9014642MIA', pac:'Marta Pires', mot:'Rastreio duplicado (5 itens em cada)', dias:1, lim:2, dono:'Ana', acao:'Cancelar o excedente antes do voo'},
+  {e:'crit', sev:'dan', ped:'81777', cod:'M9013798MIA + M9014009MIA', pac:'Nelson Araújo', mot:'Rastreio duplicado (pedido de 1 item)', dias:5, lim:6, dono:'Ana', acao:'Cancelar o excedente antes do voo'},
+  {e:'crit', sev:'dan', ped:'81444', cod:'M9012532MIA', pac:'Otávio Lima', mot:'Rastreio duplicado · o M9012954MIA já embarcou', dias:8, lim:6, dono:'Ana', acao:'Pedir o cancelamento do M9012532MIA'},
   {e:'b2b', sev:'dan', ped:'81000', cod:'M9010211MIA', pac:'Órgão público (exemplo)', mot:'"Encomenda em trânsito" (ENO) desde 21/07, sem embarque', dias:103, lim:6, dono:'B2B', acao:'Confirmar se foi entregue por outro fluxo'},
   {e:'b2b', sev:'war', ped:'81481', cod:'sem rastreio', pac:'Prefeitura (exemplo)', mot:'Em espera · Judicial, não embarcar', dias:13, lim:0, dono:'B2B', acao:'Prazo suspenso'}
 ];
 const FILA = {
-  Karol: ['81777','81703','81444','81074','81296','81555','81407','81148','81592','81629','81666'],
-  Fran:  ['81222','81185','81333','81259','81111','81148lm','81370']
+  Ana: ['81851','81777','81444','81074','81296','81592','81407','81148','81629','81666','81703'],
+  Bia:  ['81222','81185','81333','81259','81111','81148lm','81370']
 };
 const RASTREIOS = {
   'M9011055MIA': {ped:'81222', pac:'Ricardo Alves', reg:'Interior 2', criado:'05/10', lim:35, ok:true,
@@ -223,7 +284,7 @@ const MS = ['FLT','PIF','DEP','BRP','ANV','CLA','CHK','DLV'];
 const MSN = {FLT:'Pedido criado',PIF:'Pronta para envio',DEP:'Embarcou',BRP:'Desembaraço',ANV:'Anvisa',CLA:'Desembaraçada',CHK:'Centro de distribuição',DLV:'Entregue'};
 
 /* ============ ESTADO ============ */
-let S = {p:'dashboard', pessoa:'Karol', etapa:'voo', q:'M9011055MIA', filtroKpi:null};
+let S = {p:'dashboard', pessoa:'Ana', etapa:'voo', q:'M9011055MIA', filtroKpi:null};
 try{ const v=JSON.parse(localStorage.getItem('proto-log')||'{}'); if(v.pessoa) S.pessoa=v.pessoa; }catch(e){}
 const app = document.getElementById('app');
 const esc = s => String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
@@ -268,16 +329,16 @@ function dashboard(){
 
 function fila(){
   const ids = FILA[S.pessoa];
-  const itens = ids.map(id=> id==='81148lm'? ATR.find(a=>a.ped==='81148'&&a.e==='lm') : ATR.find(a=>a.ped===id && a.e!=='lm' && (S.pessoa!=='Fran'||a.dono==='Fran'||a.e==='crit')) || ATR.find(a=>a.ped===id)).filter(Boolean);
-  const avisar = S.pessoa==='Fran'? [
+  const itens = ids.map(id=> id==='81148lm'? ATR.find(a=>a.ped==='81148'&&a.e==='lm') : ATR.find(a=>a.ped===id && a.e!=='lm' && (S.pessoa!=='Bia'||a.dono==='Bia'||a.e==='crit')) || ATR.find(a=>a.ped===id)).filter(Boolean);
+  const avisar = S.pessoa==='Bia'? [
     {ped:'81296',cod:'M9012110MIA',pac:'Gabriela Torres',mot:'Prevista 18/11, prometida 14/11 · voo atrasado'},
-    {ped:'81555',cod:'M9013165MIA',pac:'Helena Castro',mot:'Prevista 20/11, prometida 16/11 · voo atrasado'},
+    {ped:'81592',cod:'M9013165MIA',pac:'Helena Castro',mot:'Prevista 20/11, prometida 16/11 · voo atrasado'},
     {ped:'81111',cod:'M9010633MIA',pac:'Lúcia Mendes',mot:'Prevista 11/11, prometida 30/10 · retida na alfândega'}]:[];
   const crit = itens.filter(i=>i.e==='crit').length, atr=itens.filter(i=>i.e!=='crit'&&i.sev==='dan').length, pre=itens.filter(i=>i.sev==='war').length;
   app.innerHTML = `
   <h1>Minha fila</h1>
   <p class="lead">Só o que precisa de ação, ordenado por gravidade. Vendo a fila de
-    <select id="pessoa" aria-label="Pessoa"><option>Karol</option><option>Fran</option></select></p>
+    <select id="pessoa" aria-label="Pessoa"><option>Ana</option><option>Bia</option></select></p>
   <div class="kpis">
     <div class="kpi k-dan"><div><div class="xs">Exceções críticas</div><div class="v">${crit}</div></div></div>
     <div class="kpi k-dan"><div><div class="xs">Atrasados</div><div class="v">${atr}</div></div></div>
@@ -330,7 +391,7 @@ function rastreio(){
   <h1>Consultar rastreio</h1>
   <p class="lead">Busque por código de rastreio, número do pedido ou nome do paciente.</p>
   <div class="card"><div class="card-b">
-    <form class="search" id="f"><input type="search" id="q" value="${esc(S.q)}" aria-label="Código, pedido ou paciente" placeholder="Ex.: M9011055MIA, 81296 ou Andrea"><button class="btn" type="submit">Buscar</button></form>
+    <form class="search" id="f"><input type="search" id="q" value="${esc(S.q)}" aria-label="Código, pedido ou paciente" placeholder="Ex.: M9011055MIA, 81296 ou Gabriela"><button class="btn" type="submit">Buscar</button></form>
     <div class="chips">Exemplos: ${['M9011055MIA','81296','81111','M9010000MIA'].map(x=>`<button data-ex="${x}">${x}</button>`).join('')}</div>
   </div></div>
   <div id="res"></div>`;
@@ -371,8 +432,8 @@ function mostra(){
 
 function codigos(){
   const rows=[
-    ['M9014642MIA','81777','FLT','27/10','<span class="badge b-dan">Duplicado</span>'],['M9014431MIA','81777','FLT','27/10','<span class="badge b-dan">Duplicado</span>'],
-    ['M9014220MIA','81814','PIF','27/10','<span class="badge b-ok">Em dia</span>'],['M9013587MIA','81740','—','—','<span class="badge b-sec">Sem evento · a revisar</span>'],
+    ['M9014642MIA','81851','FLT','27/10','<span class="badge b-dan">Duplicado</span>'],['M9014431MIA','81851','FLT','27/10','<span class="badge b-dan">Duplicado</span>'],
+    ['M9014220MIA','81888','PIF','27/10','<span class="badge b-ok">Em dia</span>'],['M9013587MIA','81814','—','—','<span class="badge b-sec">Sem evento · a revisar</span>'],
     ['M9012110MIA','81296','PIF','26/10','<span class="badge b-dan">Atrasado</span>'],['M9011899MIA','81518','ANV','23/10','<span class="badge b-ok">Em dia · Anvisa 5/10</span>'],
     ['M9011055MIA','81222','CHK → ENT','23/10','<span class="badge b-dan">Crítico</span>'],['M9010633MIA','81111','ANV → PNA','26/10','<span class="badge b-dan">Atrasado</span>'],
     ['M9010000MIA','81037','FLT','20/07','<span class="badge b-war">Arquivado (pedido cancelado)</span>']];
@@ -400,20 +461,251 @@ function gestao(){
   <p class="note">No sistema real, com filtro por fornecedor, transportadora e região e tendência de 8 semanas.</p>`;
 }
 
+const EST_CONT = {"PRONTA": 61, "SIMILARES": 35, "ULTIMAS": 90, "ENCOMENDA": 449, "FORNECEDOR": 68, "SUSPENSO": 1, "RUPTURA": 9};
+const EST = [["850027895727", "Canna River", "Canna River FS Delta 9 THC Gummies 10mg Delta 9/20mg CBD Lemon Raspber", "MIA", 57, 16, 41, 65, 57, "PRONTA", ["82369", "82221", "82147", "81925"], 137.7, ""], ["840287704136", "cbdMD", "CbdMD CBD FS Oil Tincture 6.000mg-30 ml Natural", "MIA", 40, 15, 25, 46, 49, "PRONTA", ["82406", "82258", "82110", "81962"], 370.0, ""], ["850027895741", "Canna River", "Canna River FS Delta 9 THC Gummies 10mg Delta 9/20mg CBD Blue Razz", "MIA", 42, 0, 42, 43, 88, "PRONTA", [], 138.0, ""], ["840287705393", "cbdMD", "CbdMD Delta 9 Chill Gummies 1:1 10mg THC 20 Gummies Dragon Fruit", "MIA", 27, 0, 27, 32, 76, "PRONTA", [], 142.0, ""], ["850027911694", "Canna River", "Canna River Delta 8 Tincture - 1000mg/15ml Natural", "MIA", 7, 0, 7, 29, 22, "PRONTA", [], 92.0, ""], ["840287703054", "cbdMD", "cbdMD Delta 9 Vibe Gummies 10mg THC 20 un. - Blue Razz", "MIA", 28, 11, 17, 25, 61, "PRONTA", ["82443", "82184", "82073", "82036"], 142.0, ""], ["843119101066", "Charlotte's Web", "Charlotte's Web FS CBD Olive Oil 5.000mg 100ml", "MIA", 6, 0, 6, 25, 22, "PRONTA", [], 1890.0, ""], ["850027895734", "Canna River", "Canna River FS Delta 9 THC Gummies 10mg Delta 9/20mg CBD Dragon Berry", "MIA", 4, 0, 4, 21, 17, "ULTIMAS", [], 138.0, ""], ["850027895758", "Canna River", "Canna River FS Delta 9 THC Gummies 10mg Delta 9/20mg CBD Crazy Apple", "MIA", 4, 0, 4, 17, 21, "ULTIMAS", [], 138.0, ""], ["850027911007", "Canna River", "Canna River FS CBD Classic Tincture - 3000mg/30ml Natural", "MIA", 8, 0, 8, 15, 48, "PRONTA", [], 183.6, ""], ["850027911168", "Canna River", "Canna River FS CBD Classic Tincture - 6000mg/60ml Lemon Raspberry", "MIA", 21, 4, 17, 12, 128, "PRONTA", ["82369", "82295", "81999"], 275.0, ""], ["CANNACARE00000002547", "Alma", "Alma Sleep BS CBD/CBN com 1.500mg", "MIA", 2, 0, 2, 12, 15, "ULTIMAS", [], 450.0, ""], ["840287703023", "cbdMD", "cbdMD Delta 9 Vibe Gummies 10mg THC 20 un. - Cherry", "MIA", 24, 0, 24, 10, 216, "PRONTA", [], 142.0, ""], ["850027895994", "Canna River", "Canna River FS CBD Classic Tincture - 6000mg/60ml Natural", "MIA", 12, 4, 8, 10, 72, "PRONTA", ["82332", "82147"], 275.4, ""], ["850027895413", "Canna River", "Canna River BS Pain Gummies 50mg CBD/50mg CBG 30 gummies Red Berry", "MIA", 0, 0, 0, 9, null, "ENCOMENDA", [], 161.0, ""], ["850061683052", "Canna River", "Canna River FS Ultra Pain CBD/CBG 3:1 - 20.000mg/120ml Natural", "MIA", 10, 0, 10, 8, 112, "PRONTA", [], 459.0, ""], ["840287704211", "cbdMD", "CbdMD Oil Tincture FS Sleep PM 1.500mg -30 ml Mint", "MIA", 7, 0, 7, 8, 79, "PRONTA", [], 202.5, ""], ["850027895864", "Canna River", "Canna River Delta 8 THC Gummies 25mg/unidade 30 unidades Lemon Raspber", "MIA", 2, 0, 2, 8, 22, "SIMILARES", [], 138.0, ""], ["810271037366", "cbdMD", "CbdMD CBD Oil Tincture FS 1.500mg 30ml- Natural", "MIA", 4, 0, 4, 7, 51, "SIMILARES", [], 243.0, ""], ["850027911205", "Canna River", "Canna River FS CBD Classic Tincture - 6000mg/60ml Mango Peach", "MIA", 0, 0, 0, 7, null, "ENCOMENDA", [], 275.0, ""], ["", "Outros", "Sensia Oil 300mg THC + 300mg CBD 1:1 30ml", "FOR", 0, 0, 0, 6, null, "FORNECEDOR", [], 449.0, "45 dias úteis"], ["810271037533", "cbdMD", "CbdMD CBD FS Oil Tincture 3.000mg-30 ml Natural", "MIA", 10, 0, 10, 6, 150, "PRONTA", [], 270.0, ""], ["850027895710", "Canna River", "Canna River FS Delta 9 THC Gummies 10mg Delta 9/20mg CBD Major Melonz", "MIA", 5, 0, 5, 6, 75, "ULTIMAS", [], 137.7, ""], ["850051879908", "Canna River", "Canna River FS Pain Gummies 50mgCBD/50mg CBG 30 gummies Strawberry Man", "MIA", 4, 0, 4, 6, 60, "ULTIMAS", [], 161.0, ""], ["850051879922", "Canna River", "Canna River FS Sleep Gummies 50mgCBD/50mg CBN 30 gummies Passion Orang", "MIA", 1, 0, 1, 6, 15, "SIMILARES", [], 161.0, ""], ["850051879984", "Canna River", "Canna River FS Sleep Gummies 50mgCBD/50mg CBN 30 gummies Strawberry Ma", "MIA", 0, 0, 0, 6, null, "ENCOMENDA", [], 161.0, ""], ["850051879960", "Canna River", "Canna River FS Sleep Gummies 50mgCBD/50mg CBN 30 gummies Red Berry", "MIA", 2, 0, 2, 5, 36, "ULTIMAS", [], 161.0, ""], ["850027895789", "Canna River", "Canna River BS Sleep Gummies 50mgCBD/50mg CBN 30 gummies Red Berry", "MIA", 1, 0, 1, 4, 22, "SIMILARES", [], 161.0, ""], ["850018192088", "Canna River", "Canna River FS Sleep Tincture CBD/CBN 2:1 - 7.500mg/60ml Sweet Mint", "MIA", 1, 0, 1, 3, 30, "SIMILARES", [], 299.0, ""], ["3520-MRE-CC30", "Candropharm", "Candropharm 20% FS 6.000 mg 30 ml", "LIS", 7, 0, 7, 3, 210, "PRONTA", [], 370.0, ""], ["CANNACARE00000002546", "Alma", "Alma Intense FS 6.000mg 30ml", "FOR", 0, 0, 0, 3, null, "FORNECEDOR", [], 679.0, ""], ["748252810915", "HempMeds (RSHO)", "Hempmeds RSHO X CBD Isolado 6.000mg 30ml", "FOR", 0, 0, 0, 3, null, "FORNECEDOR", [], 669.0, ""], ["3510-MRE-CC30", "Candropharm", "Candropharm 10% FS 3.000 mg 30 ml", "LIS", 9, 0, 9, 2, 405, "PRONTA", [], 270.0, ""], ["7603-THG25-CCGA15", "Candropharm", "Candropharm Gummies 25 mg CBD + 10 mg THC Green Apple 30 unidades", "LIS", 5, 0, 5, 2, 225, "ULTIMAS", [], 324.0, ""], ["702367841998", "cbdMD", "CbdMD Softgels FS CBD 1.500mg 30 Softgels", "MIA", 0, 3, 0, 0, null, "ENCOMENDA", ["82480"], 280.0, ""]];
+/* ============ ESTOQUE (painel de estoque de 28/10, relatório de 27/10) ============ */
+/* EST: [sku, marca, produto, origem MIA|LIS|FOR, estoque, reservado p/ pedidos aguardando pagamento, disponível, venda 30d, cobertura em dias, situação, pedidos, preço, prazo fornecedor] */
+const ST_NOME = {PRONTA:'Pronta entrega',SIMILARES:'Consulte similares',ULTIMAS:'Últimas unidades',ENCOMENDA:'Sob encomenda',FORNECEDOR:'Direto do fornecedor',SUSPENSO:'Suspenso',RUPTURA:'Acaba em 30 dias'};
+const ST_COR = {PRONTA:'b-ok',SIMILARES:'b-war',ULTIMAS:'b-war',ENCOMENDA:'b-sec',FORNECEDOR:'b-inf',SUSPENSO:'b-dan'};
+const ORIG = {MIA:'Miami',LIS:'Lisboa',FOR:'Fornecedor'};
+
+/* ============ COMPRAS ============ */
+/* Necessidade gerada pelos pedidos: pedidos e PLs reais da planilha de Tracking; quantidades e datas de PL ilustrativas */
+const NEC = [
+  {tipo:'ped', ped:'81629', item:'Canna River Pain Gummies', sku:'—', qtd:4, forn:'Canna River', pl:'PL 0302', dias:8, sit:'Pedido pago, sem estoque'},
+  {tipo:'ped', ped:'81555', item:'Canna River (item do pedido)', sku:'—', qtd:1, forn:'Canna River', pl:'PL 0302', dias:6, sit:'Pedido pago, sem estoque'},
+  {tipo:'ped', ped:'81148', item:'Lazarus Naturals (parte do pedido)', sku:'—', qtd:1, forn:'Lazarus Naturals', pl:'PL 0301', dias:40, sit:'Envio parcial; parte Lazarus aguarda a PL'},
+  {tipo:'ped', ped:'81666', item:'Reuni CBN Night', sku:'—', qtd:1, forn:'Reuni', pl:'PL 0304', dias:7, sit:'CbdMD do mesmo pedido tem estoque'},
+  {tipo:'ped', ped:'81740', item:"Charlotte's Web (item do pedido)", sku:'—', qtd:1, forn:"Charlotte's Web", pl:'PL 0303', dias:5, sit:'Pedido pago, sem estoque'},
+  {tipo:'ped', ped:'82480', item:'cbdMD Softgels FS CBD 1.500mg 30 un', sku:'702367841998', qtd:3, forn:'cbdMD', pl:'', dias:1, sit:'Aguardando pagamento; estoque 0'},
+  {tipo:'rep', ped:'', item:'Canna River Delta 9 Gummies Dragon Berry', sku:'850027895734', qtd:38, forn:'Canna River', pl:'', dias:0, sit:'Cobertura 17 dias · vende 21/mês'},
+  {tipo:'rep', ped:'', item:'Canna River Delta 9 Gummies Crazy Apple', sku:'850027895758', qtd:30, forn:'Canna River', pl:'', dias:0, sit:'Cobertura 21 dias · vende 17/mês'},
+  {tipo:'rep', ped:'', item:'Canna River Delta 8 Tincture 1000mg Natural', sku:'850027911694', qtd:51, forn:'Canna River', pl:'', dias:0, sit:'Cobertura 22 dias · vende 29/mês'},
+  {tipo:'rep', ped:'', item:"Charlotte's Web FS CBD Olive Oil 5.000mg 100ml", sku:'843119101066', qtd:44, forn:"Charlotte's Web", pl:'', dias:0, sit:'Cobertura 22 dias · vende 25/mês'},
+  {tipo:'rep', ped:'', item:'Alma Sleep BS CBD/CBN 1.500mg', sku:'CANNACARE00000002547', qtd:22, forn:'Alma Lab', pl:'', dias:0, sit:'Cobertura 15 dias · vende 12/mês'}
+];
+const PLS = [
+  {pl:'PL 0301', forn:'Lazarus Naturals', canal:'E-mail', st:'Em trânsito para Miami', cor:'b-inf', env:'18/09', prev:'04/11', peds:['81148'], itens:3, alerta:'Pedido 81148 já espera há 40 dias: avisar a paciente da previsão'},
+  {pl:'PL 0302', forn:'Canna River', canal:'API', st:'Confirmada pelo fornecedor', cor:'b-ok', env:'22/10', prev:'05/11', peds:['81555','81629'], itens:12, alerta:''},
+  {pl:'PL 0303', forn:"Charlotte's Web", canal:'Portal', st:'Enviada', cor:'b-sec', env:'24/10', prev:'—', peds:['81740'], itens:4, alerta:''},
+  {pl:'PL 0304', forn:'Reuni', canal:'E-mail', st:'Sem resposta há 5 dias', cor:'b-dan', env:'23/10', prev:'—', peds:['81666'], itens:2, alerta:'Cobrar o fornecedor ou oferecer envio parcial ao paciente'},
+  {pl:'PL 0305', forn:'Canna River', canal:'API', st:'Rascunho', cor:'b-war', env:'—', prev:'—', peds:[], itens:3, alerta:'Gerada a partir da reposição sugerida; falta aprovar'}
+];
+const FORN = [
+  {n:'Canna River', marcas:'Canna River', tipo:'Estoque Miami', canal:'API', prazo:'10–14 dias até Miami', pls:2},
+  {n:'cbdMD', marcas:'cbdMD', tipo:'Estoque Miami', canal:'API', prazo:'7–10 dias até Miami', pls:0},
+  {n:'Lazarus Naturals', marcas:'Lazarus Naturals', tipo:'Estoque Miami', canal:'E-mail', prazo:'30–45 dias', pls:1},
+  {n:"Charlotte's Web", marcas:"Charlotte's Web", tipo:'Estoque Miami', canal:'Portal', prazo:'10–15 dias', pls:1},
+  {n:'Reuni', marcas:'Reuni', tipo:'Estoque Miami', canal:'E-mail', prazo:'a confirmar', pls:1},
+  {n:'Alma Lab', marcas:'Alma', tipo:'Estoque Miami', canal:'E-mail', prazo:'a confirmar', pls:0},
+  {n:'Sensia', marcas:'Sensia', tipo:'Direto ao paciente', canal:'E-mail', prazo:'45 dias úteis', pls:0},
+  {n:'HempMeds', marcas:'HempMeds (RSHO)', tipo:'Direto ao paciente', canal:'Portal', prazo:'a confirmar', pls:0},
+  {n:'TerraCannabis / Nui Life', marcas:'Nui Life', tipo:'Direto ao paciente', canal:'E-mail', prazo:'a confirmar', pls:0},
+  {n:'Candropharm', marcas:'Candropharm', tipo:'Estoque Lisboa', canal:'E-mail', prazo:'corte quarta 9h, voo sábado', pls:0}
+];
+const toast = m => { const t=document.getElementById('toast'); t.textContent=m; t.classList.add('on'); clearTimeout(t._h); t._h=setTimeout(()=>t.classList.remove('on'),3200); };
+
+function estoque(){
+  const f=S.estF, q=(S.estQ||'').toLowerCase();
+  const lista = EST.filter(r=> (!f || (f==='RUPTURA'? (r[8]!==null && r[8]<=30 && r[7]>0 && r[3]!=='FOR') : r[9]===f)) && (!q || (r[0]+' '+r[1]+' '+r[2]).toLowerCase().includes(q)));
+  const chips=['PRONTA','SIMILARES','ULTIMAS','ENCOMENDA','RUPTURA','FORNECEDOR'];
+  app.innerHTML = `
+  <h1>Estoque</h1>
+  <p class="lead">Nomes, pedidos e rastreios desta versão são fictícios. O Painel de Estoque dentro do sistema: saldo, reserva por pedido e cobertura. "Sob encomenda" não é falta, é prazo maior.</p>
+  <div class="kpis k6">
+    ${chips.map(c=>`<button class="kpi ${c==='PRONTA'?'k-ok':c==='ENCOMENDA'?'k-ink':c==='FORNECEDOR'?'k-inf':c==='RUPTURA'?'k-dan':'k-war'}" data-f="${c}" aria-pressed="${S.estF===c}"><div><div class="xs">${ST_NOME[c]}</div><div class="v">${EST_CONT[c]}</div></div></button>`).join('')}
+  </div>
+  <div class="card"><div class="card-h"><div class="filters" style="flex:1">
+      <label class="xs" style="flex:1;min-width:220px">Busca<input type="search" id="eq" value="${esc(S.estQ||'')}" placeholder="Nome da receita, SKU ou marca"></label></div>
+      <span class="xs">${lista.length} de ${EST.length} itens neste protótipo · 704 no total</span></div>
+  <div class="card-b tw"><table><thead><tr><th>Produto</th><th>Origem</th><th class="n">Estoque</th><th class="n">Reservado</th><th class="n">Disponível</th><th class="n">Venda 30d</th><th class="n">Cobertura</th><th>Situação</th><th>Pedidos</th></tr></thead><tbody>
+  ${lista.map(r=>{const low=r[8]!==null&&r[8]<=30&&r[7]>0&&r[3]!=='FOR'; return `<tr class="${r[6]<=0&&r[5]>0?'farol':low?'farol-w':''}"><td><b style="color:var(--dark)">${esc(r[2])}</b><br><small class="mono">${r[0]}</small></td><td>${ORIG[r[3]]}${r[12]?`<br><small>${esc(r[12])}</small>`:''}</td>
+    <td class="n">${r[4]}</td><td class="n">${r[5]||'—'}</td><td class="n"><b>${r[6]}</b></td><td class="n">${r[7]}</td><td class="n">${r[8]===null?'—':r[8]+' d'}${r[8]!==null?meter(Math.max(0,60-r[8]),60):''}</td>
+    <td><span class="badge ${ST_COR[r[9]]||'b-sec'}">${ST_NOME[r[9]]||r[9]}</span>${low?' <span class="badge b-dan">Acaba em 30d</span>':''}${low||r[5]>r[4]?`<br><button class="btn sm green" style="margin-top:6px" data-buy="${r[0]}">Comprar</button>`:''}</td>
+    <td><small>${r[10].slice(0,2).join(', ')||'<span class="muted">—</span>'}${r[10].length>2?' +'+(r[10].length-2):''}</small></td></tr>`}).join('') || '<tr><td colspan="9">Nenhum item com esse filtro neste protótipo.</td></tr>'}
+  </tbody></table></div></div>
+  <p class="note">Reservado = unidades em pedidos aguardando pagamento há até 5 dias. Cobertura = disponível ÷ ritmo de venda dos últimos 90 dias. O botão Comprar leva o item para a próxima PL do fornecedor.</p>`;
+  app.querySelectorAll('[data-f]').forEach(b=>b.onclick=()=>{S.estF=S.estF===b.dataset.f?null:b.dataset.f; estoque(); bindQ();});
+  const eq=document.getElementById('eq'); eq.oninput=()=>{S.estQ=eq.value; const pos=eq.selectionStart; estoque(); bindQ(); const n=document.getElementById('eq'); n.focus(); n.setSelectionRange(pos,pos);};
+  app.querySelectorAll('[data-buy]').forEach(b=>b.onclick=()=>{S.compraForn=(EST.find(r=>r[0]===b.dataset.buy)||[])[1]; go('novacompra'); toast('Item adicionado à nova compra');});
+}
+function bindQ(){ app.querySelectorAll('a[data-q]').forEach(a=>a.onclick=e=>{e.preventDefault(); S.q=a.dataset.q; go('rastreio');}); }
+
+function compras(){
+  const tab=S.compTab||'ped';
+  const L=NEC.filter(n=>n.tipo===tab);
+  app.innerHTML = `
+  <h1>A comprar</h1>
+  <p class="lead">A necessidade de compra nasce dos pedidos: produto sem saldo vira item a comprar, já amarrado ao pedido e à PL.</p>
+  <div class="flow">
+    <div class="on"><b>1. Pedido pago</b>sistema confere o saldo do item</div>
+    <div class="on"><b>2. Sem saldo</b>entra em "A comprar" com o pedido vinculado</div>
+    <div><b>3. PL</b>agrupa os itens por fornecedor</div>
+    <div><b>4. Envio</b>API do fornecedor ou e-mail daqui</div>
+    <div><b>5. Recebido</b>libera o pedido e avisa o paciente</div>
+  </div>
+  <div class="kpis k4">
+    <div class="kpi k-dan"><div><div class="xs">Pedidos esperando produto</div><div class="v">${NEC.filter(n=>n.tipo==='ped').length}</div></div></div>
+    <div class="kpi k-war"><div><div class="xs">Pedidos sem PL</div><div class="v">${NEC.filter(n=>n.tipo==='ped'&&!n.pl).length}</div></div></div>
+    <div class="kpi k-inf"><div><div class="xs">PLs abertas</div><div class="v">${PLS.filter(p=>p.st!=='Rascunho').length}</div></div></div>
+    <div class="kpi k-ink"><div><div class="xs">Reposição sugerida</div><div class="v">${NEC.filter(n=>n.tipo==='rep').length}</div></div></div>
+  </div>
+  <div class="card"><div class="card-h" style="padding-bottom:0;border-bottom:0"><div class="tabsx" role="tablist">
+      <button role="tab" data-t="ped" aria-selected="${tab==='ped'}">Para pedidos de pacientes<span class="c">${NEC.filter(n=>n.tipo==='ped').length}</span></button>
+      <button role="tab" data-t="rep" aria-selected="${tab==='rep'}">Reposição de estoque</button></div>
+    <button class="btn green" id="gerar">Gerar PL com selecionados</button></div>
+  <div class="card-b tw" style="border-top:1px solid var(--line)"><table><thead><tr><th></th>${tab==='ped'?'<th>Pedido</th><th>Rastreio</th>':''}<th>Item</th><th>Fornecedor</th><th class="n">Qtd</th><th>Situação</th>${tab==='ped'?'<th class="n">Dias</th>':''}<th>PL</th></tr></thead><tbody>
+    ${L.map((n,i)=>`<tr class="${n.tipo==='ped'&&n.dias>7?'farol':n.tipo==='ped'&&!n.pl?'farol-w':''}"><td><input type="checkbox" aria-label="Selecionar" ${n.pl?'disabled':''} data-i="${i}"></td>
+      ${tab==='ped'?`<td><b style="color:var(--dark)">${n.ped}</b></td><td><span class="muted">sem rastreio</span></td>`:''}
+      <td>${esc(n.item)}${n.sku!=='—'?`<br><small class="mono">${n.sku}</small>`:''}</td><td>${esc(n.forn)}</td><td class="n">${n.qtd}</td><td>${esc(n.sit)}</td>${tab==='ped'?`<td class="n">${n.dias}</td>`:''}
+      <td>${n.pl?`<a href="#pls" class="tag" data-go="pls">${n.pl}</a>`:'<span class="badge b-war">Sem PL</span>'}</td></tr>`).join('')}
+  </tbody></table></div></div>
+  <p class="note">${tab==='rep'?'Sugestão = vendas de 60 dias menos o disponível, para os itens que acabam em até 30 dias (regra a validar com a equipe).':'Dados fictícios para demonstração. No sistema, o pedido sai desta lista sozinho quando a PL é recebida.'}</p>`;
+  app.querySelectorAll('[data-t]').forEach(b=>b.onclick=()=>{S.compTab=b.dataset.t; compras();});
+  app.querySelectorAll('[data-go]').forEach(a=>a.onclick=e=>{e.preventDefault(); go(a.dataset.go);});
+  document.getElementById('gerar').onclick=()=>{const n=app.querySelectorAll('input[data-i]:checked').length; if(!n){toast('Selecione ao menos um item sem PL');return;} S.compraForn=L[+app.querySelector('input[data-i]:checked').dataset.i].forn; go('novacompra'); toast(n+' item(ns) levados para a nova PL');};
+}
+
+function pls(){
+  app.innerHTML = `
+  <h1>Pedidos de compra</h1>
+  <p class="lead">Cada PL com o fornecedor, o canal de envio, a previsão e os pedidos de pacientes que dependem dela.</p>
+  <div class="card"><div class="card-h"><div class="filters">
+    <label class="xs">Situação<select><option>Abertas</option><option>Rascunho</option><option>Recebidas</option><option>Todas</option></select></label>
+    <label class="xs">Fornecedor<select><option>Todos</option>${FORN.map(f=>`<option>${esc(f.n)}</option>`).join('')}</select></label></div>
+    <a href="#novacompra" class="btn green" data-go="novacompra">+ Nova compra</a></div>
+  <div class="card-b tw"><table><thead><tr><th>PL</th><th>Fornecedor</th><th>Canal</th><th>Situação</th><th>Enviada</th><th>Previsão</th><th class="n">Itens</th><th>Pedidos vinculados</th></tr></thead><tbody>
+  ${PLS.map(p=>`<tr class="${p.cor==='b-dan'?'farol':''}"><td><b style="color:var(--dark)">${p.pl}</b></td><td>${esc(p.forn)}</td><td><span class="tag">${p.canal}</span></td><td><span class="badge ${p.cor}">${p.st}</span>${p.alerta?`<br><small>${esc(p.alerta)}</small>`:''}</td><td>${p.env}</td><td>${p.prev}</td><td class="n">${p.itens}</td>
+    <td>${p.peds.length?p.peds.map(x=>`${x} <small class="muted">sem rastreio</small>`).join('<br>'):'<span class="muted">reposição</span>'}</td></tr>`).join('')}
+  </tbody></table></div></div>
+  <div class="card"><div class="card-h"><b>Histórico da PL 0302</b><span class="tag">API · Canna River</span></div><div class="card-b">
+    <ul class="tl">
+      <li class="fut"><span class="pin"></span><div><span class="ev">Recebimento em Miami</span><small>libera 81555 e 81629 e avisa os pacientes</small></div><span class="d">prev. 05/11</span></li>
+      <li class="ms"><span class="pin"></span><div><span class="ev">Fornecedor confirmou e informou previsão</span><small>retorno automático pela API</small></div><span class="d">23/10</span></li>
+      <li class="ms"><span class="pin"></span><div><span class="ev">PL enviada pela API</span><small>12 itens · 2 pedidos vinculados</small></div><span class="d">22/10</span></li>
+      <li><span class="pin"></span><div><span class="ev">PL criada a partir de "A comprar"</span><small>por Ana</small></div><span class="d">22/10</span></li>
+    </ul></div></div>
+  <p class="note">Canais, datas e situações das PLs são ilustrativos; os números de PL e os pedidos também são fictícios.</p>`;
+  app.querySelectorAll('[data-go]').forEach(a=>a.onclick=e=>{e.preventDefault(); go(a.dataset.go);});
+}
+
+function novacompra(){
+  const fn=S.compraForn||'Reuni'; const f=FORN.find(x=>x.n===fn)||FORN[0];
+  const itens = NEC.filter(n=>n.forn===f.n);
+  const canal = S.canal || (f.canal==='API'?'API':'E-mail');
+  const corpo = `Olá,\n\nSegue o pedido de compra PL 0306 da CannaCare:\n\n${(itens.length?itens:[{item:'(adicione os itens)',qtd:''}]).map(n=>`- ${n.item}${n.sku&&n.sku!=='—'?' (SKU '+n.sku+')':''}: ${n.qtd} un.`).join('\n')}\n\nEntrega: armazém Memphis, Miami.\nPor favor, confirmem a disponibilidade e a previsão de envio respondendo este e-mail.\n\nObrigada,\nEquipe de Compras CannaCare`;
+  app.innerHTML = `
+  <h1>Nova compra</h1>
+  <p class="lead">Monte a PL e envie daqui: pela API quando o fornecedor tiver, ou por e-mail quando não tiver.</p>
+  <div class="grid-r">
+    <div class="card"><div class="card-h"><b>PL 0306</b><span class="badge b-war">Rascunho</span></div><div class="card-b">
+      <label class="fld"><span>Fornecedor</span><select id="forn">${FORN.map(x=>`<option ${x.n===f.n?'selected':''}>${esc(x.n)}</option>`).join('')}</select></label>
+      <dl class="kv"><dt>Tipo</dt><dd>${f.tipo}</dd><dt>Prazo</dt><dd>${f.prazo}</dd><dt>Canal cadastrado</dt><dd>${f.canal}</dd></dl>
+      <div class="xs" style="margin:16px 0 6px">Itens</div>
+      <table><thead><tr><th>Item</th><th class="n">Qtd</th><th>Pedido</th></tr></thead><tbody>
+        ${itens.length?itens.map(n=>`<tr><td>${esc(n.item)}</td><td class="n"><input type="number" min="1" value="${n.qtd}" aria-label="Quantidade"></td><td>${n.ped||'<span class="muted">reposição</span>'}</td></tr>`).join(''):'<tr><td colspan="3">Nenhum item a comprar deste fornecedor.</td></tr>'}
+      </tbody></table>
+      <p class="note" style="margin-left:0">Ao enviar, os pedidos vinculados passam para "Aguardando produto · PL 0306" e a previsão aparece para o paciente.</p>
+    </div></div>
+    <div class="card"><div class="card-h"><b>Envio</b><div class="seg" role="group" aria-label="Canal">${['API','E-mail'].map(c=>`<button data-c="${c}" aria-pressed="${canal===c}">${c}</button>`).join('')}</div></div><div class="card-b">
+      ${canal==='API'? (f.canal==='API'?`<div class="alert inf">A PL vai direto para o sistema da ${esc(f.n)}. A confirmação e a previsão voltam sozinhas para cá.</div>
+        <dl class="kv"><dt>Integração</dt><dd>Pedido de compra via API do fornecedor</dd><dt>Retorno esperado</dt><dd>confirmação, previsão, nota fiscal e rastreio até Miami</dd></dl>`
+        :`<div class="alert war">A ${esc(f.n)} não tem integração. Use o e-mail; a resposta do fornecedor é registrada manualmente na PL.</div>`)
+      :`<label class="fld"><span>Para</span><input type="email" value="compras@${f.n.toLowerCase().replace(/[^a-z]/g,'')}.exemplo" aria-label="Destinatário"></label>
+        <label class="fld"><span>Assunto</span><input type="text" value="Pedido de compra PL 0306 · CannaCare" aria-label="Assunto"></label>
+        <label class="fld"><span>Mensagem</span><textarea aria-label="Mensagem">${esc(corpo)}</textarea></label>
+        <small>As respostas chegam na caixa de compras e ficam ligadas à PL.</small>`}
+      <div style="display:flex;gap:8px;margin-top:14px;flex-wrap:wrap"><button class="btn green" id="env">${canal==='API'&&f.canal==='API'?'Enviar pela API':'Enviar e-mail'}</button><button class="btn out" id="rasc">Salvar rascunho</button></div>
+    </div></div>
+  </div>`;
+  document.getElementById('forn').onchange=e=>{S.compraForn=e.target.value; S.canal=null; novacompra();};
+  app.querySelectorAll('[data-c]').forEach(b=>b.onclick=()=>{S.canal=b.dataset.c; novacompra();});
+  document.getElementById('env').onclick=()=>toast('Protótipo: nada foi enviado. No sistema, a PL 0306 passaria para "Enviada".');
+  document.getElementById('rasc').onclick=()=>toast('Rascunho salvo (simulação)');
+}
+
+function fornecedores(){
+  app.innerHTML = `
+  <h1>Fornecedores</h1>
+  <p class="lead">Cadastro com o canal de pedido de cada um. Quem tem sistema recebe pela API; quem não tem, por e-mail com modelo pronto.</p>
+  <div class="card"><div class="card-h"><b>Fornecedores ativos</b><button class="btn green">+ Inserir</button></div>
+  <div class="card-b tw"><table><thead><tr><th>Fornecedor</th><th>Marcas</th><th>Tipo</th><th>Canal de pedido</th><th>Prazo informado</th><th class="n">PLs abertas</th></tr></thead><tbody>
+  ${FORN.map(f=>`<tr><td><b style="color:var(--dark)">${esc(f.n)}</b></td><td>${esc(f.marcas)}</td><td>${f.tipo}</td><td><span class="tag">${f.canal}</span></td><td>${esc(f.prazo)}</td><td class="n">${f.pls||'—'}</td></tr>`).join('')}
+  </tbody></table></div></div>
+  <p class="note">Os canais de pedido e os prazos são exemplos para discussão, exceto o da Sensia (45 dias úteis) e o corte de Lisboa. Cada um precisa ser confirmado com o fornecedor.</p>`;
+}
+
+/* ============ PRÉVIA DA ÁREA DO PACIENTE ============ */
+const CENAS = {
+  atraso: {lbl:'Pedido atrasado', ped:'81296', cod:'M9012110MIA', nome:'Gabriela', prev:'18/11', prom:'14/11', aviso:['ph-warn','Seu pedido vai chegar alguns dias depois do previsto. Um dos sabores estava em falta e a troca foi feita com a sua autorização. Já está pronto e embarca na quinta, 29/10.'],
+    passos:[['ok','Pagamento confirmado','05/10'],['ok','Receita e autorização Anvisa aprovadas','19/10'],['ok','Produto separado nos EUA','26/10 · sabor trocado com sua autorização'],['late','Embarque para o Brasil','previsto para quinta, 29/10'],['fut','Liberação na Anvisa e na alfândega','em média até 10 dias'],['fut','A caminho do seu endereço','Capitais: até 5 dias'],['fut','Entregue','previsão 18/11']], acao:null},
+  pend: {lbl:'Falta documento', ped:'81592', cod:'M9013165MIA', nome:'Helena', prev:'20/11', prom:'16/11', aviso:null,
+    passos:[['ok','Pagamento confirmado','19/10'],['now','Documentos','falta o comprovante de vínculo'],['fut','Produto separado nos EUA',''],['fut','Embarque para o Brasil','voos às quintas e sábados'],['fut','Liberação na Anvisa e na alfândega',''],['fut','A caminho do seu endereço',''],['fut','Entregue','previsão 20/11']],
+    acao:['ph-act','Precisamos do comprovante de vínculo para seguir com o envio.','Enviar documento']},
+  end: {lbl:'Endereço com problema', ped:'81222', cod:'M9011055MIA', nome:'Paciente', prev:'a confirmar', prom:'09/11', aviso:null,
+    passos:[['ok','Pagamento confirmado','01/10'],['ok','Documentos aprovados','03/10'],['ok','Embarcou para o Brasil','08/10'],['ok','Liberado pela Anvisa e alfândega','14/10'],['late','Tentativa de entrega','23/10 · endereço não localizado'],['fut','Entregue','']],
+    acao:['ph-act','A transportadora não encontrou o seu endereço. Confirme o endereço e um ponto de referência.','Confirmar endereço']}
+};
+function paciente(){
+  const c=CENAS[S.cena||'atraso'];
+  app.innerHTML = `
+  <h1>Prévia: área do paciente</h1>
+  <p class="lead">Como o paciente veria o pedido em loja.cannacare.com.br/minha-conta, alimentado pelos mesmos dados deste painel. Nomes, pedidos e rastreios fictícios.</p>
+  <div class="grid-r">
+    <div>
+      <div class="card"><div class="card-h"><b>Exemplo</b></div><div class="card-b"><div class="seg" role="group" aria-label="Cenário">${Object.entries(CENAS).map(([k,v])=>`<button data-cena="${k}" aria-pressed="${(S.cena||'atraso')===k}">${v.lbl}</button>`).join('')}</div></div></div>
+      <div class="card"><div class="card-h"><b>O que vimos na área do paciente hoje</b></div><div class="card-b"><ul class="find">
+        <li>A lista de pedidos mostra <b>Rastreio: "Não Disponível"</b> até em pedido entregue.</li>
+        <li>No pedido aparece <b>"Acompanhamento da entrega nos Correios"</b> com o código interno CNC_MEM_… e, logo abaixo, "Ainda não há códigos de rastreamento". O botão leva ao site dos Correios, que não é a transportadora.</li>
+        <li>Só existem 4 situações: Pagamento pendente, Aguardando, Concluído e Cancelado. Nada sobre documentos, separação, voo, Anvisa ou entrega.</li>
+        <li>Nenhuma previsão de entrega e nenhum aviso quando o prazo muda.</li>
+        <li>Documentos ficam em outra página, sem dizer qual pedido está parado por falta deles.</li>
+        <li>As páginas "Cuidado Continuado" e "Atendimento" aparecem vazias.</li>
+      </ul></div></div>
+      <div class="card"><div class="card-h"><b>Regras da proposta</b></div><div class="card-b"><ul class="find">
+        <li>Etapas em linguagem simples, geradas dos marcos Memphis (FLT, PIF, DEP, ANV, CLA, CHK, DLV) e das etapas internas (docs, produto).</li>
+        <li>Previsão de entrega sempre visível; se passar da prometida, o aviso aparece com o motivo antes do paciente perguntar.</li>
+        <li>Pendência do paciente vira um botão no próprio pedido (documento, endereço, sabor).</li>
+        <li>Rastreio real (M…MIA) com link da transportadora certa, nunca o código interno.</li>
+        <li>Aviso por WhatsApp e e-mail a cada etapa, com a mesma frase da tela.</li>
+      </ul></div></div>
+    </div>
+    <div class="phone" aria-label="Prévia da tela do paciente">
+      <div class="ph-top"><span style="font-size:20px">≡</span><div class="ph-logo">CannaCare<small>saúde &amp; bem-estar</small></div><span style="font-size:18px">👤</span></div>
+      <div class="ph-b">
+        <h3>Pedido #${c.ped}</h3>
+        <p class="ph-sub">Olá, ${c.nome}. Aqui você acompanha cada etapa até a entrega.</p>
+        ${c.acao?`<div class="ph-card ${c.acao[0]}"><b>Ação necessária</b><br>${c.acao[1]}<br><button class="ph-btn" data-ph="1">${c.acao[2]}</button></div>`:''}
+        <div class="ph-card ph-prev"><small>Previsão de entrega</small><div class="big">${c.prev}</div><small>Prazo informado na compra: ${c.prom}</small></div>
+        ${c.aviso?`<div class="ph-card ${c.aviso[0]}">${c.aviso[1]}</div>`:''}
+        <div class="ph-card"><ul class="steps">${c.passos.map(p=>`<li class="${p[0]}"><i></i><b>${p[1]}</b>${p[2]?`<small>${p[2]}</small>`:''}</li>`).join('')}</ul></div>
+        <div class="ph-card">
+          <div class="ph-row"><span>Código de rastreio</span><b class="mono">${c.cod}</b></div>
+          <div class="ph-row"><span>Transportadora</span><span>Memphis Express</span></div>
+          <button class="ph-btn out" data-ph="2">Ver todos os eventos</button></div>
+        <div class="ph-card"><b style="font-size:13px">Avisos sobre este pedido</b>
+          <label class="sw">WhatsApp <input type="checkbox" checked></label><label class="sw">E-mail <input type="checkbox" checked></label></div>
+        <button class="ph-btn out" data-ph="3" style="width:100%">Falar com o atendimento sobre este pedido</button>
+      </div>
+    </div>
+  </div>`;
+  app.querySelectorAll('[data-cena]').forEach(b=>b.onclick=()=>{S.cena=b.dataset.cena; paciente();});
+  app.querySelectorAll('[data-ph]').forEach(b=>b.onclick=()=>toast('Protótipo: na loja, esta ação abriria o envio, o histórico ou o atendimento.'));
+}
+
 /* ============ NAVEGAÇÃO ============ */
-const PAGES={dashboard,fila,etapas,rastreio,codigos,gestao};
+const PAGES={dashboard,fila,etapas,rastreio,codigos,gestao,estoque,compras,pls,novacompra,fornecedores,paciente};
 function go(p){ S.p=PAGES[p]?p:'dashboard'; if(location.hash!=='#'+S.p) history.replaceState(null,'','#'+S.p); render(); window.scrollTo(0,0); }
 function save(){ try{localStorage.setItem('proto-log',JSON.stringify({pessoa:S.pessoa}));}catch(e){} }
 function render(){
-  document.querySelectorAll('#nav-log a').forEach(a=>a.classList.toggle('sel',a.dataset.p===S.p));
+  document.querySelectorAll('aside a[data-p]').forEach(a=>a.classList.toggle('sel',a.dataset.p===S.p));
+  document.getElementById('cnt-comp').textContent = NEC.filter(n=>n.tipo==='ped').length;
   document.getElementById('cnt-fila').textContent = FILA[S.pessoa].length;
   PAGES[S.p]();
   app.querySelectorAll('a[data-q]').forEach(a=>a.onclick=e=>{e.preventDefault(); S.q=a.dataset.q; go('rastreio');});
 }
-document.querySelectorAll('#nav-log a').forEach(a=>a.onclick=e=>{e.preventDefault(); go(a.dataset.p);});
+document.querySelectorAll('aside a[data-p]').forEach(a=>a.onclick=e=>{e.preventDefault(); go(a.dataset.p);});
 window.addEventListener('hashchange',()=>{const h=location.hash.slice(1); if(PAGES[h]&&h!==S.p){S.p=h;render();}});
 S.p = PAGES[location.hash.slice(1)]? location.hash.slice(1) : 'dashboard';
 render();
 </script>
-</body>
-</html>
