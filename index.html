@@ -1,0 +1,419 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Painel de Logística CannaCare</title>
+<meta name="robots" content="noindex">
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap">
+<style>
+/* Layout: mesmo esqueleto do sistema atual (SB Admin 2) — barra lateral fixa à esquerda, conteúdo em cards brancos sobre fundo bege-cinza.
+   Tema único (claro), igual ao sistema, por escolha. */
+:root{
+  --bg:#f2f3f0; --card:#ffffff; --line:#e3e6f0; --text:#858796; --dark:#5a5c69; --ink:#3b3b3b; --link:#282828;
+  --purple:#5a2e88; --green-nav:#57b439; --success:#32aa60; --chart-green:#1cc88a; --danger:#e74a3b; --warning:#f6c23e; --info:#4e73df;
+  --farol:#fdedef; --farol-warn:#fff8e6; --gray300:#dddfeb; --secondary:#858796;
+  --font:"Montserrat",system-ui,-apple-system,"Segoe UI",sans-serif; --mono:ui-monospace,Menlo,Consolas,monospace;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html,body{background:var(--bg)}
+body{color:var(--text);font-family:var(--font);font-size:14px;line-height:1.5}
+a{color:var(--ink)}
+.shell{display:grid;grid-template-columns:230px minmax(0,1fr);min-height:100vh}
+aside{background:var(--bg);padding:16px 0 24px;padding-left:max(0px,env(safe-area-inset-left,0px));position:sticky;top:0;align-self:start;height:100vh;overflow:auto}
+.logo{width:46px;height:46px;border-radius:50%;background:var(--purple);color:#fff;display:grid;place-items:center;font-weight:800;font-size:22px;margin:0 auto 20px}
+.sh{color:var(--purple);font-size:10.4px;font-weight:800;text-transform:uppercase;padding:14px 20px 4px;letter-spacing:.02em}
+.nav{list-style:none;margin:0;padding:0}
+.nav a{display:flex;align-items:center;gap:10px;color:var(--link);text-decoration:none;font-size:13px;padding:6px 20px;margin-right:14px;border-radius:0 20px 20px 0;text-transform:uppercase;font-weight:500;letter-spacing:.01em}
+.nav a svg{width:14px;height:14px;flex:none;fill:currentColor}
+.nav a:hover{background:#e6e8e2}
+.nav a.sel{background:var(--green-nav);color:#fff}
+.nav a.off{opacity:.55;pointer-events:none}
+.nav .new{font-size:9px;background:var(--purple);color:#fff;border-radius:8px;padding:1px 6px;margin-left:auto;text-transform:none}
+.nav .cnt{margin-left:auto;background:var(--danger);color:#fff;border-radius:9px;font-size:10px;padding:0 6px;font-weight:700}
+.nav a.sel .cnt{background:#fff;color:var(--danger)}
+hr.sd{border:0;border-top:1px solid #dcdfd7;margin:10px 20px}
+main{padding:18px max(20px,env(safe-area-inset-right,0px)) 48px 12px;min-width:0}
+h1{font-size:28px;font-weight:400;color:var(--dark);margin:6px 0 4px 6px}
+.lead{margin:0 0 18px 6px;font-size:13px}
+.card{background:var(--card);border-radius:6px;box-shadow:0 2px 28px rgba(58,59,69,.15);margin-bottom:22px;min-width:0}
+.card-h{padding:12px 20px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.card-h b{color:var(--ink);font-weight:700}
+.card-b{padding:18px 20px}
+.xs{font-size:11.2px;font-weight:700;text-transform:uppercase;letter-spacing:.02em}
+.kpis{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:18px;margin-bottom:22px}
+.kpi{background:var(--card);border-radius:6px;box-shadow:0 2px 28px rgba(58,59,69,.15);border-left:4px solid var(--ink);padding:16px 18px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;text-align:left;font:inherit;border-top:0;border-right:0;border-bottom:0}
+.kpi .v{font-size:20px;font-weight:700;color:var(--dark);font-variant-numeric:tabular-nums}
+.kpi svg{width:28px;height:28px;fill:var(--gray300)}
+.k-ink{border-left-color:var(--ink)}.k-ink .xs{color:var(--ink)}
+.k-ok{border-left-color:var(--success)}.k-ok .xs{color:var(--success)}
+.k-dan{border-left-color:var(--danger)}.k-dan .xs{color:var(--danger)}
+.k-war{border-left-color:var(--warning)}.k-war .xs{color:#c99a14}
+.k-inf{border-left-color:var(--info)}.k-inf .xs{color:var(--info)}
+.kpi[aria-pressed="true"]{outline:2px solid var(--ink)}
+.grid2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:22px}
+.grid-r{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.5fr);gap:22px;align-items:start}
+.tw{overflow-x:auto}
+table{border-collapse:collapse;width:100%;color:var(--text);font-size:13.5px}
+th,td{border:1px solid var(--line);padding:9px 11px;text-align:left;vertical-align:top}
+th{font-weight:700;white-space:nowrap}
+td.n,th.n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+tr.farol td{background:var(--farol)}
+tr.farol-w td{background:var(--farol-warn)}
+tbody tr:hover td{filter:brightness(.98)}
+tr.click{cursor:pointer}
+.muted{color:#b7b9cc}
+.mono{font-family:var(--mono);font-size:12.5px}
+.badge{display:inline-block;font-size:10.5px;font-weight:700;color:#fff;border-radius:5px;padding:3px 7px;line-height:1.2;white-space:nowrap;vertical-align:middle}
+.b-dan{background:var(--danger)}.b-war{background:var(--warning);color:#3b3b3b}.b-ok{background:var(--success)}.b-ink{background:var(--ink)}.b-dark{background:var(--dark)}.b-sec{background:var(--secondary)}.b-inf{background:var(--info)}.b-pur{background:var(--purple)}
+.badge.big{font-size:18px;padding:6px 14px}
+.btn{font:inherit;font-size:13px;border-radius:3px;border:1px solid var(--ink);background:var(--ink);color:#fff;padding:6px 12px;cursor:pointer}
+.btn.out{background:transparent;color:var(--ink)}
+.btn.sm{font-size:12px;padding:3px 8px}
+.btn.green{background:var(--success);border-color:var(--success)}
+input[type=search],select{font:inherit;font-size:13px;color:var(--dark);border:1px solid #d1d3e2;border-radius:3px;padding:6px 10px;background:#fff}
+.search{display:flex;gap:8px;flex-wrap:wrap}
+.search input{flex:1;min-width:220px}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px;font-size:12px}
+.chips button{font:inherit;font-size:12px;border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:12px;padding:2px 10px;cursor:pointer}
+.tabsx{display:flex;border-bottom:1px solid var(--line);gap:2px;flex-wrap:wrap;margin:0 0 -1px}
+.tabsx button{font:inherit;font-size:13px;color:#6e707e;background:none;border:1px solid transparent;border-bottom:0;border-radius:5px 5px 0 0;padding:8px 14px;cursor:pointer}
+.tabsx button[aria-selected="true"]{background:#fff;border-color:var(--line);color:var(--ink);font-weight:600}
+.tabsx .c{display:inline-block;margin-left:6px;background:var(--danger);color:#fff;border-radius:8px;font-size:10px;padding:0 6px}
+.stagebar{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:12px}
+.stg{background:#fff;border:1px solid var(--line);border-radius:6px;padding:12px;cursor:pointer;text-align:left;font:inherit;color:inherit}
+.stg[aria-pressed="true"]{border-color:var(--ink);box-shadow:inset 0 0 0 1px var(--ink)}
+.stg .t{font-size:11px;font-weight:700;text-transform:uppercase;color:var(--dark);display:block;min-height:28px}
+.stg .v{font-size:22px;font-weight:700;color:var(--danger)}
+.stg .v.zero{color:var(--success)}
+.stg small{display:block;font-size:11px}
+.meter{height:6px;background:#eaecf4;border-radius:3px;overflow:hidden;margin-top:4px;min-width:60px}
+.meter i{display:block;height:100%;background:var(--danger)}
+.meter i.w{background:var(--warning)}.meter i.o{background:var(--chart-green)}
+/* rastreio */
+.tl{list-style:none;margin:0;padding:0}
+.tl li{display:grid;grid-template-columns:18px minmax(0,1fr) auto;gap:10px;padding:8px 0;border-bottom:1px dashed #eceef4}
+.tl li:last-child{border-bottom:0}
+.tl .pin{width:10px;height:10px;border-radius:50%;background:var(--dark);margin-top:5px}
+.tl li.ms .pin{background:var(--ink);box-shadow:0 0 0 3px #d9d9d9}
+.tl li.crit .pin{background:var(--danger);box-shadow:0 0 0 3px #f7c9c4}
+.tl li.fut .pin{background:#fff;border:2px solid var(--gray300)}
+.tl li.fut{color:#b7b9cc}
+.tl .ev{color:var(--dark)}
+.tl small{display:block;font-size:11.5px;color:var(--text)}
+.tl .d{font-size:12px;white-space:nowrap;text-align:right;font-variant-numeric:tabular-nums}
+.alert{border-radius:6px;padding:12px 16px;margin-bottom:16px;font-size:13.5px}
+.alert.dan{background:var(--farol);color:#a1281c;border:1px solid #f5c6cb}
+.alert.war{background:var(--farol-warn);color:#7a5a00;border:1px solid #f5e3a6}
+.alert.inf{background:#eef2fd;color:#2b4c9e;border:1px solid #cdd8f7}
+.kv{display:grid;grid-template-columns:auto minmax(0,1fr);gap:7px 16px;font-size:13px}
+.kv dt{color:var(--text)}.kv dd{margin:0;color:var(--dark)}
+.strike{text-decoration:line-through}
+.prog{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:3px;margin:6px 0 2px}
+.prog i{height:8px;border-radius:2px;background:#eaecf4}
+.prog i.d{background:var(--chart-green)}.prog i.n{background:var(--danger)}
+.note{font-size:12px;color:var(--text);margin:6px 0 0 6px}
+.chartbox{position:relative;height:250px}
+.filters{display:flex;flex-wrap:wrap;gap:10px;align-items:end}
+.filters label{display:grid;gap:3px}
+.hide-sm{}
+@media (max-width:980px){
+  .shell{grid-template-columns:minmax(0,1fr)}
+  aside{position:static;height:auto;padding:12px max(16px,env(safe-area-inset-left,0px)) 6px}
+  .logo{display:none}
+  .sh,.nav li.other,hr.sd,.nav.oth{display:none}
+  .nav{display:flex;gap:6px;overflow-x:auto;padding-bottom:6px}
+  .nav a{margin:0;border-radius:16px;white-space:nowrap;padding:6px 12px}
+  main{padding:8px max(16px,env(safe-area-inset-right,0px)) 40px max(16px,env(safe-area-inset-left,0px))}
+  .kpis{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .stagebar{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .grid2,.grid-r{grid-template-columns:minmax(0,1fr)}
+  .hide-sm{display:none}
+}
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,tr.click:focus-visible{outline:2px solid var(--purple);outline-offset:2px}
+</style>
+</head>
+<body>
+
+<div class="shell">
+<aside>
+  <div class="logo">C</div>
+  <ul class="nav">
+    <li class="other"><a class="off" href="#"><svg viewBox="0 0 16 16"><path d="M8 1a7 7 0 1 0 7 7A7 7 0 0 0 8 1zm0 2a5 5 0 0 1 4.9 4H8z"/></svg>Dashboard</a></li>
+    <li class="other"><a class="off" href="#"><svg viewBox="0 0 16 16"><rect x="4" y="1" width="8" height="14" rx="2"/></svg>Receitas</a></li>
+    <li class="other"><a class="off" href="#"><svg viewBox="0 0 16 16"><rect x="1" y="3" width="14" height="12" rx="1"/></svg>Agendamentos</a></li>
+    <li class="other"><a class="off" href="#"><svg viewBox="0 0 16 16"><circle cx="8" cy="5" r="3"/><path d="M2 15c0-3.3 2.7-5 6-5s6 1.7 6 5z"/></svg>Pacientes</a></li>
+  </ul>
+  <div class="sh">Logística</div>
+  <ul class="nav" id="nav-log">
+    <li><a href="#dashboard" data-p="dashboard"><svg viewBox="0 0 16 16"><path d="M1 4h9v7H1zm9 2h3l2 3v2h-5z"/><circle cx="4" cy="12.5" r="1.5"/><circle cx="12" cy="12.5" r="1.5"/></svg>Dashboard</a></li>
+    <li><a href="#fila" data-p="fila"><svg viewBox="0 0 16 16"><path d="M2 3h12v2H2zm0 4h12v2H2zm0 4h8v2H2z"/></svg>Minha fila<span class="cnt" id="cnt-fila">11</span></a></li>
+    <li><a href="#etapas" data-p="etapas"><svg viewBox="0 0 16 16"><path d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1zm.8 3v4.2l3 1.8-.8 1.3-3.8-2.3V4z"/></svg>Atrasados por etapa<span class="new">novo</span></a></li>
+    <li><a href="#rastreio" data-p="rastreio"><svg viewBox="0 0 16 16"><path d="M6.5 1a5.5 5.5 0 0 1 4.4 8.8l4 4-1.1 1.1-4-4A5.5 5.5 0 1 1 6.5 1zm0 2a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7z"/></svg>Consultar rastreio<span class="new">novo</span></a></li>
+    <li><a href="#codigos" data-p="codigos"><svg viewBox="0 0 16 16"><path d="M1 4l7-3 7 3v8l-7 3-7-3zm7 1L3.5 3.2 8 5l4.5-1.8z"/></svg>Códigos de rastreio</a></li>
+    <li><a href="#gestao" data-p="gestao"><svg viewBox="0 0 16 16"><path d="M1 14h14v1H1zM2 9h2v4H2zm4-4h2v8H6zm4 2h2v6h-2zm4-5h1v11h-1z"/></svg>Gestão semanal<span class="new">novo</span></a></li>
+  </ul>
+  <hr class="sd">
+  <div class="sh">Cadastros</div>
+  <ul class="nav oth">
+    <li><a class="off" href="#"><svg viewBox="0 0 16 16"><circle cx="8" cy="5" r="3"/></svg>Profissionais</a></li>
+    <li><a class="off" href="#"><svg viewBox="0 0 16 16"><rect x="3" y="2" width="10" height="12"/></svg>Patologias</a></li>
+  </ul>
+</aside>
+<main id="app"></main>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script>
+/* ============ DADOS (reais de 28/10: extrato Memphis 27/10, histórico do sistema e planilha de Tracking) ============ */
+const ETAPAS = [
+  {id:'pre',  nome:'Antes do rastreio', sub:'docs, produto, decisão do paciente', dono:'Karol', lim:'7 dias desde o pagamento'},
+  {id:'voo',  nome:'Rastreio → voo', sub:'FLT, PIF, aguardando embarque', dono:'Karol', lim:'6 dias acumulados'},
+  {id:'anv',  nome:'Anvisa e desembaraço', sub:'DEP, BRP, ANV, CLA', dono:'Fran', lim:'18 dias acumulados'},
+  {id:'lm',   nome:'Last mile', sub:'CHK até a entrega, por região', dono:'Fran', lim:'20 + 2 a 15 dias'},
+  {id:'crit', nome:'Exceções críticas', sub:'eventos e rastreio duplicado', dono:'Karol / Fran', lim:'ação no mesmo dia'},
+  {id:'b2b',  nome:'B2B e judicial', sub:'fluxo próprio', dono:'Responsável B2B', lim:'conforme contrato'}
+];
+const ATR = [ // atrasados e exceções, por etapa
+  {e:'pre', sev:'dan', ped:'81148', cod:'sem rastreio (parte Lazarus)', pac:'Beatriz Lemos', mot:'Aguardando produto · PL 0173', dias:40, lim:7, dono:'Karol', acao:'Registrar a previsão da PL 0173 e avisar a paciente'},
+  {e:'pre', sev:'dan', ped:'81370', cod:'sem rastreio', pac:'Carla Nunes', mot:'Aguardando decisão do paciente · sabor pendente desde 23/10', dias:9, lim:7, dono:'Fran', acao:'Fechar o sabor com a paciente'},
+  {e:'pre', sev:'dan', ped:'81592', cod:'sem rastreio', pac:'Daniel Prado', mot:'Aguardando produto · Pain Gummies x4 · estoque 0 · PL 0189', dias:8, lim:7, dono:'Karol', acao:'Registrar a previsão da PL 0189'},
+  {e:'pre', sev:'war', ped:'81629', cod:'sem rastreio', pac:'Elisa Moura', mot:'Aguardando produto · Reuni CBN Night · PL 1092', dias:7, lim:7, dono:'Karol', acao:'Oferecer envio parcial (CbdMD tem estoque)'},
+  {e:'voo', sev:'dan', ped:'81074', cod:'M9011477MIA', pac:'Fernanda Rocha', mot:'"Pedido criado" (FLT) desde 13/10, nenhum outro evento', dias:15, lim:6, dono:'Karol', acao:'Confirmar com a Memphis se o produto foi separado'},
+  {e:'voo', sev:'dan', ped:'81296', cod:'M9012110MIA', pac:'Gabriela Torres', mot:'Pronta para envio (PIF) desde 26/10, sem voo', dias:8, lim:6, dono:'Karol', acao:'Cobrar a data do voo'},
+  {e:'voo', sev:'dan', ped:'81555', cod:'M9013165MIA', pac:'Helena Castro', mot:'Pronta para envio (PIF) desde 26/10, sem voo', dias:8, lim:6, dono:'Karol', acao:'Cobrar a data do voo'},
+  {e:'voo', sev:'dan', ped:'81407', cod:'M9012743MIA', pac:'Isabela Freitas', mot:'Pronta para envio (PIF) desde 27/10, sem voo', dias:8, lim:6, dono:'Karol', acao:'Cobrar a data do voo'},
+  {e:'voo', sev:'war', ped:'81666', cod:'M9013376MIA', pac:'Joana Ribeiro', mot:'Pronta para envio (PIF) desde 27/10 · no limite', dias:6, lim:6, dono:'Karol', acao:'Cobrar junto com o lote se não embarcar amanhã'},
+  {e:'anv', sev:'dan', ped:'81111', cod:'M9010633MIA', pac:'Lúcia Mendes', mot:'Armazém alfandegário (PNA) desde 26/10 · Anvisa desde 08/10', dias:28, lim:18, dono:'Fran', acao:'Cobrar a posição do desembaraço e avisar a paciente'},
+  {e:'lm',  sev:'dan', ped:'81148', cod:'M9010422MIA', pac:'Beatriz Lemos', mot:'Last mile para interior do RJ (Interior 1)', dias:34, lim:27, dono:'Fran', acao:'Avisar a previsão de 05/11'},
+  {e:'crit', sev:'dan', ped:'81222', cod:'M9011055MIA', pac:'—', mot:'ENT · Endereço não localizado (23/10)', dias:23, lim:35, dono:'Fran', acao:'Confirmar o endereço com o paciente'},
+  {e:'crit', sev:'dan', ped:'81185', cod:'M9011266MIA', pac:'—', mot:'INS · Fiscalização SEFAZ (24/10)', dias:21, lim:35, dono:'Fran', acao:'Acompanhar com a Memphis e avisar o paciente'},
+  {e:'crit', sev:'dan', ped:'81333', cod:'M9011688MIA', pac:'—', mot:'GRE · Memphis pede contato para confirmar dados (26/10)', dias:13, lim:27, dono:'Fran', acao:'Confirmar os dados de entrega'},
+  {e:'crit', sev:'dan', ped:'81259', cod:'M9010844MIA', pac:'—', mot:'TAX · CPF irregular na Receita (09/10)', dias:27, lim:27, dono:'Fran', acao:'Pedir a regularização do CPF'},
+  {e:'crit', sev:'dan', ped:'81777', cod:'M9014431MIA + M9014642MIA', pac:'Marta Pires', mot:'Rastreio duplicado (5 itens em cada)', dias:1, lim:2, dono:'Karol', acao:'Cancelar o excedente antes do voo'},
+  {e:'crit', sev:'dan', ped:'81703', cod:'M9013798MIA + M9014009MIA', pac:'Nelson Araújo', mot:'Rastreio duplicado (pedido de 1 item)', dias:5, lim:6, dono:'Karol', acao:'Cancelar o excedente antes do voo'},
+  {e:'crit', sev:'dan', ped:'81444', cod:'M9012532MIA', pac:'Otávio Lima', mot:'Rastreio duplicado · o M9012954MIA já embarcou', dias:8, lim:6, dono:'Karol', acao:'Pedir o cancelamento do M9012532MIA'},
+  {e:'b2b', sev:'dan', ped:'81000', cod:'M9010211MIA', pac:'Órgão público (exemplo)', mot:'"Encomenda em trânsito" (ENO) desde 21/07, sem embarque', dias:103, lim:6, dono:'B2B', acao:'Confirmar se foi entregue por outro fluxo'},
+  {e:'b2b', sev:'war', ped:'81481', cod:'sem rastreio', pac:'Prefeitura (exemplo)', mot:'Em espera · Judicial, não embarcar', dias:13, lim:0, dono:'B2B', acao:'Prazo suspenso'}
+];
+const FILA = {
+  Karol: ['81777','81703','81444','81074','81296','81555','81407','81148','81592','81629','81666'],
+  Fran:  ['81222','81185','81333','81259','81111','81148lm','81370']
+};
+const RASTREIOS = {
+  'M9011055MIA': {ped:'81222', pac:'Ricardo Alves', reg:'Interior 2', criado:'05/10', lim:35, ok:true,
+    ev:[['TRA','05/10','Em trânsito para a base no aeroporto de origem',0],['FLT','05/10','Seu pedido foi criado com sucesso',1],['PIP','06/10','Sua encomenda está sendo preparada',0],['PIF','06/10','Sua encomenda está pronta para ser enviada',1],['ENO','07/10','Encomenda em trânsito',0],['DEP','08/10','Saiu da origem rumo a Guarulhos',1],['ARR','09/10','Chegou ao aeroporto de destino',0],['AAZ','13/10','Recebido pela GRU Airport',0],['BRP','13/10','Processo de desembaraço iniciado',1],['ANV','13/10','Em inspeção pela Anvisa',1],['CLA','14/10','Encomenda desembaraçada',1],['CHK','15/10','Entrada registrada no Centro de Distribuição',1],['TRU','16/10','Transferência entre bases no Brasil',0],['TRC','16/10','Encomenda transferida com sucesso',0],['ENT','23/10','ENDEREÇO NÃO LOCALIZADO',2]],
+    alerta:['dan','Evento crítico: endereço não localizado em 23/10. Confirmar o endereço com o paciente e passar à Memphis.']},
+  'M9012110MIA': {ped:'81296', pac:'Gabriela Torres', reg:'Capitais', criado:'20/10', lim:25, outros:[['M9012321MIA','cancelado (criado no sistema, sem evento)']],
+    ev:[['FLT','20/10','Seu pedido foi criado com sucesso',1],['PIP','20/10','Sua encomenda está sendo preparada',0],['PIF','26/10','Sua encomenda está pronta para ser enviada',1]],
+    alerta:['dan','Atrasado: 8 de 6 dias acumulados até o voo. Entrega prevista 18/11, prometida 14/11.']},
+  'M9010633MIA': {ped:'81111', pac:'Lúcia Mendes', reg:'Interior 1', criado:'30/09', lim:27,
+    ev:[['FLT','30/09','Seu pedido foi criado com sucesso',1],['PIP','30/09','Sua encomenda está sendo preparada',0],['TRA','30/09','Em trânsito para a base no aeroporto de origem',0],['PIF','01/10','Sua encomenda está pronta para ser enviada',1],['DEP','05/10','Saiu da origem rumo a Guarulhos',1],['ARR','05/10','Chegou ao aeroporto de destino',0],['AAZ','08/10','Recebido pela GRU Airport',0],['BRP','08/10','Processo de desembaraço iniciado',1],['ANV','08/10','Em inspeção pela Anvisa',1],['PNA','26/10','Presença no armazém alfandegário',0]],
+    alerta:['dan','Atrasado: 28 de 18 dias acumulados até o desembaraço. Na Anvisa desde 08/10 (limite 10 dias).']},
+  'M9010000MIA': {ped:'81037', pac:'Paulo Souza', reg:'—', criado:'20/07', lim:0, fantasma:true,
+    ev:[['FLT','20/07','Seu pedido foi criado com sucesso',1]],
+    alerta:['war','Código a revisar: nenhum movimento desde 20/07 e não existe no extrato da Memphis. Na planilha de Tracking o pedido está cancelado. Este código não entra nos indicadores.']}
+};
+const PEDIDOS = {'81296':'M9012110MIA','81222':'M9011055MIA','81111':'M9010633MIA','81037':'M9010000MIA'};
+const MS = ['FLT','PIF','DEP','BRP','ANV','CLA','CHK','DLV'];
+const MSN = {FLT:'Pedido criado',PIF:'Pronta para envio',DEP:'Embarcou',BRP:'Desembaraço',ANV:'Anvisa',CLA:'Desembaraçada',CHK:'Centro de distribuição',DLV:'Entregue'};
+
+/* ============ ESTADO ============ */
+let S = {p:'dashboard', pessoa:'Karol', etapa:'voo', q:'M9011055MIA', filtroKpi:null};
+try{ const v=JSON.parse(localStorage.getItem('proto-log')||'{}'); if(v.pessoa) S.pessoa=v.pessoa; }catch(e){}
+const app = document.getElementById('app');
+const esc = s => String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const sevBadge = s => s==='dan'?'<span class="badge b-dan">Atrasado</span>':'<span class="badge b-war">Pré-alerta</span>';
+const meter = (d,l) => { if(!l) return ''; const p=Math.min(100,Math.round(d/l*100)); return `<div class="meter"><i class="${p>=100?'':p>=80?'w':'o'}" style="width:${p}%"></i></div>`; };
+const codLink = c => /^M\d+MIA$/.test(c)? `<a href="#rastreio" data-q="${c}" class="mono">${c}</a>` : `<span class="mono">${esc(c)}</span>`;
+let chart;
+
+/* ============ TELAS ============ */
+function dashboard(){
+  const byE = id => ATR.filter(a=>a.e===id && a.sev==='dan').length;
+  app.innerHTML = `
+  <h1>Dashboard de Logística</h1>
+  <p class="lead">Situação de hoje, por pedido. Atraso = prazo da etapa <b>ou</b> prazo acumulado estourado. Códigos sem movimento que não existem na Memphis ficam fora dos números.</p>
+  <div class="kpis">
+    <div class="kpi k-ink"><div><div class="xs">Pedidos em aberto</div><div class="v">135</div></div><svg viewBox="0 0 16 16"><path d="M1 4l7-3 7 3v8l-7 3-7-3z"/></svg></div>
+    <div class="kpi k-ok"><div><div class="xs">Em dia</div><div class="v">126</div></div><svg viewBox="0 0 16 16"><path d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1zm-1 10L3.5 7.5l1.4-1.4L7 8.2l4.1-4.1 1.4 1.4z"/></svg></div>
+    <div class="kpi k-dan"><div><div class="xs">Atrasados</div><div class="v">9</div></div><svg viewBox="0 0 16 16"><path d="M8 1l7 13H1zm-1 5v4h2V6zm0 5v2h2v-2z"/></svg></div>
+    <div class="kpi k-dan"><div><div class="xs">Exceções críticas</div><div class="v">7</div></div><svg viewBox="0 0 16 16"><path d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1zm-1 3h2v5H7zm0 6h2v2H7z"/></svg></div>
+    <div class="kpi k-war"><div><div class="xs">% atrasados</div><div class="v">6,7%</div></div><svg viewBox="0 0 16 16"><path d="M3 13L13 3l1 1L4 14zM4 3a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3zm8 7a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3z"/></svg></div>
+  </div>
+  <div class="grid2">
+    <div class="card"><div class="card-h"><b>Atrasados por etapa</b><a href="#etapas" class="btn sm out">Ver fila por etapa</a></div><div class="card-b"><div class="chartbox"><canvas id="c1" aria-label="Atrasados por etapa"></canvas></div></div></div>
+    <div class="card"><div class="card-h"><b>Lotes parados</b><span class="xs">agrupados por data de entrada</span></div><div class="card-b tw">
+      <table><thead><tr><th>Lote</th><th class="n">Pedidos</th><th>Situação</th></tr></thead><tbody>
+        <tr class="farol"><td>Prontos para envio desde 26/10 (Memphis Miami)</td><td class="n">11</td><td>${meter(8,6)}<small>3 já passaram de 6 dias</small></td></tr>
+        <tr><td>Na Anvisa desde 23/10</td><td class="n">22</td><td>${meter(5,10)}<small>dia 5 de 10</small></td></tr>
+        <tr><td>Entraram na Anvisa em 28/10</td><td class="n">13</td><td>${meter(0,10)}<small>dia 0 de 10</small></td></tr>
+        <tr><td>Desembaraçados em 28/10</td><td class="n">25</td><td>${meter(0,2)}<small>last mile começa</small></td></tr>
+      </tbody></table></div></div>
+  </div>
+  <div class="card"><div class="card-h"><b>Pedidos por etapa e prazo</b><span class="xs">antes do rastreio + marcos Memphis</span></div><div class="card-b"><div class="chartbox"><canvas id="c2" aria-label="Pedidos por etapa"></canvas></div></div></div>
+  <p class="note">Protótipo com dados fictícios (nomes, pedidos e rastreios trocados), baseados na situação de 28/10. As contagens das etapas antes do rastreio são parciais: hoje o sistema não registra docs nem produto.</p>`;
+  if(window.Chart){
+    Chart.defaults.font.family='Montserrat'; Chart.defaults.color='#858796';
+    new Chart(document.getElementById('c1'),{type:'bar',data:{labels:['Antes do rastreio','Rastreio → voo','Anvisa e desemb.','Last mile','Exceções críticas'],datasets:[{label:'Atrasados',data:[byE('pre'),byE('voo'),byE('anv'),byE('lm'),byE('crit')],backgroundColor:'#e74a3b'}]},options:{maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,ticks:{precision:0}}},onClick:(e,el)=>{if(el.length){S.etapa=['pre','voo','anv','lm','crit'][el[0].index];go('etapas');}}}});
+    new Chart(document.getElementById('c2'),{type:'bar',data:{labels:['Aguard. docs','Aguard. produto','Pedido criado','Pronta p/ envio','Embarcou/BRP','Anvisa','Desembaraçada','Last mile'],datasets:[
+      {label:'Em dia',data:[9,2,10,14,0,35,32,32],backgroundColor:'#1cc88a'},{label:'Pré-alerta',data:[4,1,0,1,0,0,0,3],backgroundColor:'#f6c23e'},{label:'Atrasados',data:[0,2,1,3,0,1,0,1],backgroundColor:'#e74a3b'}]},
+      options:{maintainAspectRatio:false,scales:{x:{stacked:true},y:{stacked:true,beginAtZero:true}}}});
+  }
+}
+
+function fila(){
+  const ids = FILA[S.pessoa];
+  const itens = ids.map(id=> id==='81148lm'? ATR.find(a=>a.ped==='81148'&&a.e==='lm') : ATR.find(a=>a.ped===id && a.e!=='lm' && (S.pessoa!=='Fran'||a.dono==='Fran'||a.e==='crit')) || ATR.find(a=>a.ped===id)).filter(Boolean);
+  const avisar = S.pessoa==='Fran'? [
+    {ped:'81296',cod:'M9012110MIA',pac:'Gabriela Torres',mot:'Prevista 18/11, prometida 14/11 · voo atrasado'},
+    {ped:'81555',cod:'M9013165MIA',pac:'Helena Castro',mot:'Prevista 20/11, prometida 16/11 · voo atrasado'},
+    {ped:'81111',cod:'M9010633MIA',pac:'Lúcia Mendes',mot:'Prevista 11/11, prometida 30/10 · retida na alfândega'}]:[];
+  const crit = itens.filter(i=>i.e==='crit').length, atr=itens.filter(i=>i.e!=='crit'&&i.sev==='dan').length, pre=itens.filter(i=>i.sev==='war').length;
+  app.innerHTML = `
+  <h1>Minha fila</h1>
+  <p class="lead">Só o que precisa de ação, ordenado por gravidade. Vendo a fila de
+    <select id="pessoa" aria-label="Pessoa"><option>Karol</option><option>Fran</option></select></p>
+  <div class="kpis">
+    <div class="kpi k-dan"><div><div class="xs">Exceções críticas</div><div class="v">${crit}</div></div></div>
+    <div class="kpi k-dan"><div><div class="xs">Atrasados</div><div class="v">${atr}</div></div></div>
+    <div class="kpi k-war"><div><div class="xs">Pré-alertas</div><div class="v">${pre}</div></div></div>
+    <div class="kpi k-inf"><div><div class="xs">Pacientes a avisar</div><div class="v">${avisar.length}</div></div></div>
+    <div class="kpi k-ok"><div><div class="xs">Resolvidos hoje</div><div class="v" id="res">0</div></div></div>
+  </div>
+  <div class="card"><div class="card-h"><b>Itens de ${S.pessoa}</b><span class="xs">clique no código para ver o rastreio</span></div><div class="card-b tw">
+    <table><thead><tr><th>Pedido</th><th>Rastreio</th><th>Motivo</th><th class="n">Dias / limite</th><th>Ação esperada</th><th>Status</th></tr></thead><tbody>
+    ${itens.map((i,k)=>`<tr class="${i.sev==='dan'?'farol':'farol-w'}"><td><b style="color:var(--dark)">${i.ped}</b><br><small>${esc(i.pac)}</small></td><td>${codLink(i.cod)}</td><td>${i.e==='crit'?'<span class="badge b-dan">Crítico</span> ':sevBadge(i.sev)+' '}${esc(i.mot)}</td><td class="n">${i.dias} / ${i.lim}${meter(i.dias,i.lim)}</td><td>${esc(i.acao)}</td>
+      <td><select class="st" id="st-${S.pessoa}-${k}" aria-label="Status"><option>A fazer</option><option>Em andamento</option><option>Resolvido</option><option>Não procede</option></select></td></tr>`).join('')}
+    </tbody></table></div></div>
+  ${avisar.length?`<div class="card"><div class="card-h"><b>Pacientes a avisar</b><span class="xs">data prevista passou da prometida</span></div><div class="card-b tw">
+    <table><thead><tr><th>Pedido</th><th>Rastreio</th><th>Paciente</th><th>Motivo</th><th></th></tr></thead><tbody>
+    ${avisar.map(a=>`<tr><td>${a.ped}</td><td>${codLink(a.cod)}</td><td>${esc(a.pac)}</td><td>${esc(a.mot)}</td><td><button class="btn sm green" data-av="1">Registrar aviso</button></td></tr>`).join('')}
+    </tbody></table></div></div>`:''}
+  <p class="note">Os status não são salvos neste protótipo.</p>`;
+  const sel=document.getElementById('pessoa'); sel.value=S.pessoa; sel.onchange=e=>{S.pessoa=e.target.value; save(); render();};
+  app.querySelectorAll('select.st').forEach(s=>s.onchange=()=>{document.getElementById('res').textContent=[...app.querySelectorAll('select.st')].filter(x=>x.value==='Resolvido').length;});
+  app.querySelectorAll('[data-av]').forEach(b=>b.onclick=()=>{b.textContent='Avisado agora'; b.disabled=true;});
+}
+
+function etapas(){
+  const e = ETAPAS.find(x=>x.id===S.etapa);
+  const lista = ATR.filter(a=>a.e===S.etapa).sort((a,b)=>(a.sev===b.sev?0:a.sev==='dan'?-1:1)||b.dias/b.lim-a.dias/a.lim);
+  app.innerHTML = `
+  <h1>Atrasados por etapa</h1>
+  <p class="lead">Substitui "Pacotes em atraso". Cada etapa tem dono e prazo; escolha a etapa para ver a fila.</p>
+  <div class="stagebar" role="group" aria-label="Etapas">
+    ${ETAPAS.map(x=>{const n=ATR.filter(a=>a.e===x.id&&a.sev==='dan').length, w=ATR.filter(a=>a.e===x.id&&a.sev==='war').length;
+      return `<button class="stg" data-e="${x.id}" aria-pressed="${x.id===S.etapa}"><span class="t">${x.nome}</span><span class="v ${n?'':'zero'}">${n}</span><small>${w?w+' em pré-alerta · ':''}dono: ${x.dono}</small></button>`}).join('')}
+  </div>
+  <div class="card" style="margin-top:22px"><div class="card-h"><b>${e.nome}</b><span class="xs">${e.sub} · limite: ${e.lim}</span></div><div class="card-b tw">
+    <table><thead><tr><th>Pedido</th><th>Rastreio</th><th>Paciente</th><th>Situação</th><th class="n">Dias / limite</th><th>Dono</th><th>Ação esperada</th></tr></thead><tbody>
+    ${lista.length? lista.map(i=>`<tr class="${i.sev==='dan'?'farol':'farol-w'}"><td><b style="color:var(--dark)">${i.ped}</b></td><td>${codLink(i.cod)}</td><td>${esc(i.pac)}</td><td>${sevBadge(i.sev)} ${esc(i.mot)}</td><td class="n">${i.dias} / ${i.lim||'—'}${meter(i.dias,i.lim)}</td><td>${i.dono}</td><td>${esc(i.acao)}</td></tr>`).join('') : '<tr><td colspan="7">Nenhum pedido atrasado nesta etapa.</td></tr>'}
+    </tbody></table></div></div>
+  <div class="card"><div class="card-h"><b>Como o prazo é calculado</b></div><div class="card-b">
+    <table><thead><tr><th>Marco</th><th class="n">Prazo da etapa</th><th class="n">Acumulado</th></tr></thead><tbody>
+      <tr><td>FLT · Pedido criado</td><td class="n">2</td><td class="n">2</td></tr><tr><td>PIF · Pronta para envio</td><td class="n">3</td><td class="n">5</td></tr>
+      <tr><td>DEP · Embarcou</td><td class="n">1</td><td class="n">6</td></tr><tr><td>BRP · Desembaraço iniciado</td><td class="n">0</td><td class="n">6</td></tr>
+      <tr><td>ANV · Inspeção Anvisa <span class="badge b-pur">passa a ser marco</span></td><td class="n">10</td><td class="n">16</td></tr>
+      <tr><td>CLA · Desembaraçada</td><td class="n">2</td><td class="n">18</td></tr><tr><td>CHK · Centro de distribuição</td><td class="n">2</td><td class="n">20</td></tr>
+      <tr><td>Last mile · Grande SP 2, Interior SP 3, Capitais 5, Interior 1 7, Interior 2 15</td><td class="n">2–15</td><td class="n">22–35</td></tr>
+    </tbody></table></div></div>`;
+  app.querySelectorAll('.stg').forEach(b=>b.onclick=()=>{S.etapa=b.dataset.e; etapas();});
+}
+
+function rastreio(){
+  app.innerHTML = `
+  <h1>Consultar rastreio</h1>
+  <p class="lead">Busque por código de rastreio, número do pedido ou nome do paciente.</p>
+  <div class="card"><div class="card-b">
+    <form class="search" id="f"><input type="search" id="q" value="${esc(S.q)}" aria-label="Código, pedido ou paciente" placeholder="Ex.: M9011055MIA, 81296 ou Andrea"><button class="btn" type="submit">Buscar</button></form>
+    <div class="chips">Exemplos: ${['M9011055MIA','81296','81111','M9010000MIA'].map(x=>`<button data-ex="${x}">${x}</button>`).join('')}</div>
+  </div></div>
+  <div id="res"></div>`;
+  document.getElementById('f').onsubmit=e=>{e.preventDefault(); S.q=document.getElementById('q').value.trim(); mostra();};
+  app.querySelectorAll('[data-ex]').forEach(b=>b.onclick=()=>{S.q=b.dataset.ex; document.getElementById('q').value=S.q; mostra();});
+  mostra();
+}
+function mostra(){
+  const box=document.getElementById('res'); const q=S.q.toUpperCase();
+  let cod = RASTREIOS[q]? q : PEDIDOS[q] || Object.keys(RASTREIOS).find(k=>RASTREIOS[k].pac.toUpperCase().includes(q) && q.length>2);
+  if(!cod){ box.innerHTML='<div class="alert inf">Nenhum resultado neste protótipo. Use um dos exemplos acima.</div>'; return; }
+  const r=RASTREIOS[cod]; const atingidos=new Set(r.ev.filter(e=>e[3]).map(e=>e[0]));
+  const ultimoMs=[...r.ev].reverse().find(e=>e[3]===1);
+  box.innerHTML = `
+  <div class="alert ${r.alerta[0]}">${esc(r.alerta[1])}</div>
+  <div class="grid-r">
+    <div>
+      <div class="card"><div class="card-h"><b>Dados do rastreio</b></div><div class="card-b">
+        <p style="text-align:center;margin:0 0 14px"><span class="badge b-ink big">${cod}</span></p>
+        <dl class="kv"><dt>Pedido</dt><dd>${r.ped}</dd><dt>Paciente</dt><dd>${esc(r.pac)}</dd><dt>Região</dt><dd>${r.reg}</dd>
+          <dt>Rastreio criado</dt><dd>${r.criado}</dd><dt>Etapa atual</dt><dd>${ultimoMs?ultimoMs[0]+' · '+MSN[ultimoMs[0]]:'—'}</dd>
+          ${r.lim?`<dt>Prazo total</dt><dd>${r.lim} dias (${r.reg})</dd>`:''}
+          ${r.outros?r.outros.map(o=>`<dt>Outro código</dt><dd><span class="mono strike">${o[0]}</span> <small>${o[1]}</small></dd>`).join(''):''}
+        </dl>
+        <div class="xs" style="margin-top:16px">Marcos</div>
+        <div class="prog" style="grid-template-columns:repeat(${MS.length},minmax(0,1fr))">${MS.map(m=>`<i class="${atingidos.has(m)?'d':''}" title="${MSN[m]}"></i>`).join('')}</div>
+        <small>${[...atingidos].length} de ${MS.length} marcos</small>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:16px">
+          ${r.fantasma?'<button class="btn sm">Arquivar código</button><button class="btn sm out">Vincular ao código correto</button>':'<button class="btn sm">Atualizar histórico</button><button class="btn sm out">Registrar contato</button><button class="btn sm out">Marcar como substituído</button>'}
+        </div>
+      </div></div>
+    </div>
+    <div class="card"><div class="card-h"><b>Histórico do rastreio</b><span><span class="badge b-ink">Marco</span> <span class="badge b-sec">Intermediário</span> <span class="badge b-dan">Crítico</span></span></div><div class="card-b">
+      <ul class="tl">${[...r.ev].reverse().map(e=>`<li class="${e[3]===2?'crit':e[3]?'ms':''}"><span class="pin"></span><div><span class="badge b-dark">LIC-${e[0]}</span> <span class="ev">${esc(e[2])}</span> ${e[3]===2?'<span class="badge b-dan">Crítico</span>':e[3]?'<span class="badge b-ink">Marco</span>':'<span class="badge b-sec">Intermediário</span>'}</div><span class="d">${e[1]}</span></li>`).join('')}</ul>
+    </div></div>
+  </div>`;
+}
+
+function codigos(){
+  const rows=[
+    ['M9014642MIA','81777','FLT','27/10','<span class="badge b-dan">Duplicado</span>'],['M9014431MIA','81777','FLT','27/10','<span class="badge b-dan">Duplicado</span>'],
+    ['M9014220MIA','81814','PIF','27/10','<span class="badge b-ok">Em dia</span>'],['M9013587MIA','81740','—','—','<span class="badge b-sec">Sem evento · a revisar</span>'],
+    ['M9012110MIA','81296','PIF','26/10','<span class="badge b-dan">Atrasado</span>'],['M9011899MIA','81518','ANV','23/10','<span class="badge b-ok">Em dia · Anvisa 5/10</span>'],
+    ['M9011055MIA','81222','CHK → ENT','23/10','<span class="badge b-dan">Crítico</span>'],['M9010633MIA','81111','ANV → PNA','26/10','<span class="badge b-dan">Atrasado</span>'],
+    ['M9010000MIA','81037','FLT','20/07','<span class="badge b-war">Arquivado (pedido cancelado)</span>']];
+  app.innerHTML = `
+  <h1>Códigos de rastreio</h1>
+  <p class="lead">A lista atual, com o status de prazo e os códigos a revisar separados.</p>
+  <div class="card"><div class="card-h"><div class="filters">
+    <label class="xs">Busca<input type="search" placeholder="Código ou pedido"></label>
+    <label class="xs">Situação<select><option>Todos</option><option>Atrasados</option><option>Críticos</option><option>A revisar (sem movimento / duplicados)</option><option>Arquivados</option></select></label>
+    <label class="xs">Origem<select><option>Todas</option><option>Memphis · CannaCare MIA</option><option>Memphis · Lisboa</option><option>Sensia</option><option>HempMeds</option><option>Correios / Courrier</option></select></label></div>
+    <button class="btn green">+ Inserir</button></div>
+  <div class="card-b tw"><table><thead><tr><th>#</th><th>Pedido</th><th>Marco / último evento</th><th>Data</th><th>Prazo</th><th class="hide-sm">Ações</th></tr></thead><tbody>
+    ${rows.map(r=>`<tr><td>${codLink(r[0])}</td><td>${r[1]}</td><td>${r[2]}</td><td>${r[3]}</td><td>${r[4]}</td><td class="hide-sm"><button class="btn sm out">Ver</button></td></tr>`).join('')}
+  </tbody></table></div></div>`;
+}
+
+function gestao(){
+  const L=[['Equipe: pagamento → rastreio','3,1','9,0','72%'],['Memphis Miami: rastreio → voo','4,0','8,0','81%'],['Anvisa e alfândega: voo → desembaraço','7,5','12,0','93%'],['Last mile: desembaraço → entrega','3,8','9,5','88%'],['Total: pagamento → entrega','19,2','31,0','78%']];
+  app.innerHTML = `
+  <h1>Gestão semanal</h1>
+  <p class="lead">De quem é cada atraso. Entregas da semana de 20 a 26/10, em dias úteis.</p>
+  <div class="card"><div class="card-h"><b>Prazo por trecho</b><span class="xs">valores ilustrativos</span></div><div class="card-b tw">
+    <table><thead><tr><th>Trecho e dono</th><th class="n">Mediana</th><th class="n">P90</th><th class="n">No prazo</th></tr></thead><tbody>
+    ${L.map(l=>`<tr><td>${l[0]}</td><td class="n">${l[1]}</td><td class="n">${l[2]}</td><td class="n">${l[3]}</td></tr>`).join('')}</tbody></table></div></div>
+  <p class="note">No sistema real, com filtro por fornecedor, transportadora e região e tendência de 8 semanas.</p>`;
+}
+
+/* ============ NAVEGAÇÃO ============ */
+const PAGES={dashboard,fila,etapas,rastreio,codigos,gestao};
+function go(p){ S.p=PAGES[p]?p:'dashboard'; if(location.hash!=='#'+S.p) history.replaceState(null,'','#'+S.p); render(); window.scrollTo(0,0); }
+function save(){ try{localStorage.setItem('proto-log',JSON.stringify({pessoa:S.pessoa}));}catch(e){} }
+function render(){
+  document.querySelectorAll('#nav-log a').forEach(a=>a.classList.toggle('sel',a.dataset.p===S.p));
+  document.getElementById('cnt-fila').textContent = FILA[S.pessoa].length;
+  PAGES[S.p]();
+  app.querySelectorAll('a[data-q]').forEach(a=>a.onclick=e=>{e.preventDefault(); S.q=a.dataset.q; go('rastreio');});
+}
+document.querySelectorAll('#nav-log a').forEach(a=>a.onclick=e=>{e.preventDefault(); go(a.dataset.p);});
+window.addEventListener('hashchange',()=>{const h=location.hash.slice(1); if(PAGES[h]&&h!==S.p){S.p=h;render();}});
+S.p = PAGES[location.hash.slice(1)]? location.hash.slice(1) : 'dashboard';
+render();
+</script>
+</body>
+</html>
