@@ -1,3 +1,8 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Painel de Logística CannaCare</title>
 <meta name="robots" content="noindex">
 <meta name="claude:viewport-fit-sides" content="cover">
@@ -184,6 +189,8 @@ ul.find li{margin-bottom:8px}
 button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,tr.click:focus-visible{outline:2px solid var(--purple);outline-offset:2px}
 </style>
 
+</head>
+<body>
 <div class="shell">
 <aside>
   <div class="logo">C</div>
@@ -212,10 +219,6 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,tr
     <li><a href="#pls" data-p="pls"><svg viewBox="0 0 16 16"><path d="M3 1h7l3 3v11H3zm2 5h6v1.5H5zm0 3h6v1.5H5z"/></svg>Pedidos de compra<span class="new">novo</span></a></li>
     <li><a href="#novacompra" data-p="novacompra"><svg viewBox="0 0 16 16"><path d="M7 2h2v5h5v2H9v5H7V9H2V7h5z"/></svg>Nova compra<span class="new">novo</span></a></li>
     <li><a href="#fornecedores" data-p="fornecedores"><svg viewBox="0 0 16 16"><path d="M1 5h14v2H1zm1 3h12v7H2zm2-7h8l1 3H3z"/></svg>Fornecedores<span class="new">novo</span></a></li>
-  </ul>
-  <div class="sh">Área do paciente</div>
-  <ul class="nav">
-    <li><a href="#paciente" data-p="paciente"><svg viewBox="0 0 16 16"><circle cx="8" cy="5" r="3"/><path d="M2 15c0-3.3 2.7-5 6-5s6 1.7 6 5z"/></svg>Prévia: meu pedido<span class="new">novo</span></a></li>
   </ul>
   <hr class="sd">
   <div class="sh">Cadastros</div>
@@ -285,7 +288,7 @@ const MSN = {FLT:'Pedido criado',PIF:'Pronta para envio',DEP:'Embarcou',BRP:'Des
 
 /* ============ ESTADO ============ */
 let S = {p:'dashboard', pessoa:'Ana', etapa:'voo', q:'M9011055MIA', filtroKpi:null};
-try{ const v=JSON.parse(localStorage.getItem('proto-log')||'{}'); if(v.pessoa) S.pessoa=v.pessoa; }catch(e){}
+try{ const v=JSON.parse(localStorage.getItem('proto-log')||'{}'); if(v.pessoa && FILA[v.pessoa]) S.pessoa=v.pessoa; }catch(e){}
 const app = document.getElementById('app');
 const esc = s => String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const sevBadge = s => s==='dan'?'<span class="badge b-dan">Atrasado</span>':'<span class="badge b-war">Pré-alerta</span>';
@@ -375,7 +378,7 @@ function etapas(){
     <table><thead><tr><th>Pedido</th><th>Rastreio</th><th>Paciente</th><th>Situação</th><th class="n">Dias / limite</th><th>Dono</th><th>Ação esperada</th></tr></thead><tbody>
     ${lista.length? lista.map(i=>`<tr class="${i.sev==='dan'?'farol':'farol-w'}"><td><b style="color:var(--dark)">${i.ped}</b></td><td>${codLink(i.cod)}</td><td>${esc(i.pac)}</td><td>${sevBadge(i.sev)} ${esc(i.mot)}</td><td class="n">${i.dias} / ${i.lim||'—'}${meter(i.dias,i.lim)}</td><td>${i.dono}</td><td>${esc(i.acao)}</td></tr>`).join('') : '<tr><td colspan="7">Nenhum pedido atrasado nesta etapa.</td></tr>'}
     </tbody></table></div></div>
-  <div class="card"><div class="card-h"><b>Como o prazo é calculado</b></div><div class="card-b">
+  <div class="card"><div class="card-h"><b>Como o prazo é calculado</b></div><div class="card-b tw">
     <table><thead><tr><th>Marco</th><th class="n">Prazo da etapa</th><th class="n">Acumulado</th></tr></thead><tbody>
       <tr><td>FLT · Pedido criado</td><td class="n">2</td><td class="n">2</td></tr><tr><td>PIF · Pronta para envio</td><td class="n">3</td><td class="n">5</td></tr>
       <tr><td>DEP · Embarcou</td><td class="n">1</td><td class="n">6</td></tr><tr><td>BRP · Desembaraço iniciado</td><td class="n">0</td><td class="n">6</td></tr>
@@ -635,66 +638,9 @@ function fornecedores(){
   <p class="note">Os canais de pedido e os prazos são exemplos para discussão, exceto o da Sensia (45 dias úteis) e o corte de Lisboa. Cada um precisa ser confirmado com o fornecedor.</p>`;
 }
 
-/* ============ PRÉVIA DA ÁREA DO PACIENTE ============ */
-const CENAS = {
-  atraso: {lbl:'Pedido atrasado', ped:'81296', cod:'M9012110MIA', nome:'Gabriela', prev:'18/11', prom:'14/11', aviso:['ph-warn','Seu pedido vai chegar alguns dias depois do previsto. Um dos sabores estava em falta e a troca foi feita com a sua autorização. Já está pronto e embarca na quinta, 29/10.'],
-    passos:[['ok','Pagamento confirmado','05/10'],['ok','Receita e autorização Anvisa aprovadas','19/10'],['ok','Produto separado nos EUA','26/10 · sabor trocado com sua autorização'],['late','Embarque para o Brasil','previsto para quinta, 29/10'],['fut','Liberação na Anvisa e na alfândega','em média até 10 dias'],['fut','A caminho do seu endereço','Capitais: até 5 dias'],['fut','Entregue','previsão 18/11']], acao:null},
-  pend: {lbl:'Falta documento', ped:'81592', cod:'M9013165MIA', nome:'Helena', prev:'20/11', prom:'16/11', aviso:null,
-    passos:[['ok','Pagamento confirmado','19/10'],['now','Documentos','falta o comprovante de vínculo'],['fut','Produto separado nos EUA',''],['fut','Embarque para o Brasil','voos às quintas e sábados'],['fut','Liberação na Anvisa e na alfândega',''],['fut','A caminho do seu endereço',''],['fut','Entregue','previsão 20/11']],
-    acao:['ph-act','Precisamos do comprovante de vínculo para seguir com o envio.','Enviar documento']},
-  end: {lbl:'Endereço com problema', ped:'81222', cod:'M9011055MIA', nome:'Paciente', prev:'a confirmar', prom:'09/11', aviso:null,
-    passos:[['ok','Pagamento confirmado','01/10'],['ok','Documentos aprovados','03/10'],['ok','Embarcou para o Brasil','08/10'],['ok','Liberado pela Anvisa e alfândega','14/10'],['late','Tentativa de entrega','23/10 · endereço não localizado'],['fut','Entregue','']],
-    acao:['ph-act','A transportadora não encontrou o seu endereço. Confirme o endereço e um ponto de referência.','Confirmar endereço']}
-};
-function paciente(){
-  const c=CENAS[S.cena||'atraso'];
-  app.innerHTML = `
-  <h1>Prévia: área do paciente</h1>
-  <p class="lead">Como o paciente veria o pedido em loja.cannacare.com.br/minha-conta, alimentado pelos mesmos dados deste painel. Nomes, pedidos e rastreios fictícios.</p>
-  <div class="grid-r">
-    <div>
-      <div class="card"><div class="card-h"><b>Exemplo</b></div><div class="card-b"><div class="seg" role="group" aria-label="Cenário">${Object.entries(CENAS).map(([k,v])=>`<button data-cena="${k}" aria-pressed="${(S.cena||'atraso')===k}">${v.lbl}</button>`).join('')}</div></div></div>
-      <div class="card"><div class="card-h"><b>O que vimos na área do paciente hoje</b></div><div class="card-b"><ul class="find">
-        <li>A lista de pedidos mostra <b>Rastreio: "Não Disponível"</b> até em pedido entregue.</li>
-        <li>No pedido aparece <b>"Acompanhamento da entrega nos Correios"</b> com o código interno CNC_MEM_… e, logo abaixo, "Ainda não há códigos de rastreamento". O botão leva ao site dos Correios, que não é a transportadora.</li>
-        <li>Só existem 4 situações: Pagamento pendente, Aguardando, Concluído e Cancelado. Nada sobre documentos, separação, voo, Anvisa ou entrega.</li>
-        <li>Nenhuma previsão de entrega e nenhum aviso quando o prazo muda.</li>
-        <li>Documentos ficam em outra página, sem dizer qual pedido está parado por falta deles.</li>
-        <li>As páginas "Cuidado Continuado" e "Atendimento" aparecem vazias.</li>
-      </ul></div></div>
-      <div class="card"><div class="card-h"><b>Regras da proposta</b></div><div class="card-b"><ul class="find">
-        <li>Etapas em linguagem simples, geradas dos marcos Memphis (FLT, PIF, DEP, ANV, CLA, CHK, DLV) e das etapas internas (docs, produto).</li>
-        <li>Previsão de entrega sempre visível; se passar da prometida, o aviso aparece com o motivo antes do paciente perguntar.</li>
-        <li>Pendência do paciente vira um botão no próprio pedido (documento, endereço, sabor).</li>
-        <li>Rastreio real (M…MIA) com link da transportadora certa, nunca o código interno.</li>
-        <li>Aviso por WhatsApp e e-mail a cada etapa, com a mesma frase da tela.</li>
-      </ul></div></div>
-    </div>
-    <div class="phone" aria-label="Prévia da tela do paciente">
-      <div class="ph-top"><span style="font-size:20px">≡</span><div class="ph-logo">CannaCare<small>saúde &amp; bem-estar</small></div><span style="font-size:18px">👤</span></div>
-      <div class="ph-b">
-        <h3>Pedido #${c.ped}</h3>
-        <p class="ph-sub">Olá, ${c.nome}. Aqui você acompanha cada etapa até a entrega.</p>
-        ${c.acao?`<div class="ph-card ${c.acao[0]}"><b>Ação necessária</b><br>${c.acao[1]}<br><button class="ph-btn" data-ph="1">${c.acao[2]}</button></div>`:''}
-        <div class="ph-card ph-prev"><small>Previsão de entrega</small><div class="big">${c.prev}</div><small>Prazo informado na compra: ${c.prom}</small></div>
-        ${c.aviso?`<div class="ph-card ${c.aviso[0]}">${c.aviso[1]}</div>`:''}
-        <div class="ph-card"><ul class="steps">${c.passos.map(p=>`<li class="${p[0]}"><i></i><b>${p[1]}</b>${p[2]?`<small>${p[2]}</small>`:''}</li>`).join('')}</ul></div>
-        <div class="ph-card">
-          <div class="ph-row"><span>Código de rastreio</span><b class="mono">${c.cod}</b></div>
-          <div class="ph-row"><span>Transportadora</span><span>Memphis Express</span></div>
-          <button class="ph-btn out" data-ph="2">Ver todos os eventos</button></div>
-        <div class="ph-card"><b style="font-size:13px">Avisos sobre este pedido</b>
-          <label class="sw">WhatsApp <input type="checkbox" checked></label><label class="sw">E-mail <input type="checkbox" checked></label></div>
-        <button class="ph-btn out" data-ph="3" style="width:100%">Falar com o atendimento sobre este pedido</button>
-      </div>
-    </div>
-  </div>`;
-  app.querySelectorAll('[data-cena]').forEach(b=>b.onclick=()=>{S.cena=b.dataset.cena; paciente();});
-  app.querySelectorAll('[data-ph]').forEach(b=>b.onclick=()=>toast('Protótipo: na loja, esta ação abriria o envio, o histórico ou o atendimento.'));
-}
 
 /* ============ NAVEGAÇÃO ============ */
-const PAGES={dashboard,fila,etapas,rastreio,codigos,gestao,estoque,compras,pls,novacompra,fornecedores,paciente};
+const PAGES={dashboard,fila,etapas,rastreio,codigos,gestao,estoque,compras,pls,novacompra,fornecedores};
 function go(p){ S.p=PAGES[p]?p:'dashboard'; if(location.hash!=='#'+S.p) history.replaceState(null,'','#'+S.p); render(); window.scrollTo(0,0); }
 function save(){ try{localStorage.setItem('proto-log',JSON.stringify({pessoa:S.pessoa}));}catch(e){} }
 function render(){
@@ -709,3 +655,6 @@ window.addEventListener('hashchange',()=>{const h=location.hash.slice(1); if(PAG
 S.p = PAGES[location.hash.slice(1)]? location.hash.slice(1) : 'dashboard';
 render();
 </script>
+
+</body>
+</html>
